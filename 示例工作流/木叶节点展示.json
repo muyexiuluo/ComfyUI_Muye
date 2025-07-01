@@ -1,0 +1,5871 @@
+{
+  "id": "35cba4d2-5a9b-40e0-a082-9f768e7fed8d",
+  "revision": 0,
+  "last_node_id": 197,
+  "last_link_id": 193,
+  "nodes": [
+    {
+      "id": 5,
+      "type": "MaskConcatenate",
+      "pos": [
+        -1290,
+        -310
+      ],
+      "size": [
+        270,
+        102
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "遮罩1",
+          "name": "遮罩1",
+          "type": "MASK",
+          "link": null
+        },
+        {
+          "label": "遮罩2",
+          "name": "遮罩2",
+          "type": "MASK",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "拼接遮罩",
+          "name": "拼接遮罩",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MaskConcatenate",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        false,
+        "左右"
+      ]
+    },
+    {
+      "id": 6,
+      "type": "MaskFillHoles",
+      "pos": [
+        -1270,
+        -120
+      ],
+      "size": [
+        140,
+        26
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "遮罩",
+          "name": "遮罩",
+          "type": "MASK",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "填充遮罩",
+          "name": "填充遮罩",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MaskFillHoles",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 7,
+      "type": "MaskMergeList",
+      "pos": [
+        -1300,
+        0
+      ],
+      "size": [
+        270,
+        82
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "遮罩",
+          "name": "遮罩",
+          "type": "MASK",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "合并遮罩",
+          "name": "合并遮罩",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MaskMergeList",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        false,
+        false
+      ]
+    },
+    {
+      "id": 14,
+      "type": "TextSplitByDelimiterEnhanced",
+      "pos": [
+        -420.7835693359375,
+        107.16453552246094
+      ],
+      "size": [
+        400,
+        272
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "外部文本列表",
+          "name": "外部文本列表",
+          "shape": 7,
+          "type": "STRING",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "总列表",
+          "name": "总列表",
+          "shape": 6,
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "label": "选中列表的完整分割",
+          "name": "选中列表的完整分割",
+          "shape": 6,
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "label": "选中段落",
+          "name": "选中段落",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "TextSplitByDelimiterEnhanced",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "文本框",
+        "",
+        "<think>",
+        false,
+        1,
+        1,
+        0,
+        [
+          false,
+          true
+        ]
+      ]
+    },
+    {
+      "id": 1,
+      "type": "AudioToFPS",
+      "pos": [
+        -1741.202880859375,
+        -630.0465087890625
+      ],
+      "size": [
+        270,
+        126
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "音频",
+          "name": "音频",
+          "type": "AUDIO",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "音频时长(s)",
+          "name": "音频时长(s)",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "label": "FPS",
+          "name": "FPS",
+          "type": "INT",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AudioToFPS",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        25,
+        8,
+        true
+      ]
+    },
+    {
+      "id": 2,
+      "type": "MuyeMathCalculator",
+      "pos": [
+        -1781.3485107421875,
+        -296.4857177734375
+      ],
+      "size": [
+        345.7268981933594,
+        188.96139526367188
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "a",
+          "name": "a",
+          "shape": 7,
+          "type": "*",
+          "link": null
+        },
+        {
+          "label": "b",
+          "name": "b",
+          "shape": 7,
+          "type": "*",
+          "link": null
+        },
+        {
+          "label": "c",
+          "name": "c",
+          "shape": 7,
+          "type": "*",
+          "link": null
+        },
+        {
+          "label": "d",
+          "name": "d",
+          "shape": 7,
+          "type": "*",
+          "link": null
+        },
+        {
+          "label": "e",
+          "name": "e",
+          "shape": 7,
+          "type": "*",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "整数",
+          "name": "整数",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "label": "浮点",
+          "name": "浮点",
+          "type": "FLOAT",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MuyeMathCalculator",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "",
+        [
+          false,
+          true
+        ]
+      ]
+    },
+    {
+      "id": 3,
+      "type": "MuyeSizeSelector",
+      "pos": [
+        -1744.1339111328125,
+        -8.266672134399414
+      ],
+      "size": [
+        270,
+        238
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "宽",
+          "name": "宽",
+          "shape": 7,
+          "type": "*",
+          "link": null
+        },
+        {
+          "label": "高",
+          "name": "高",
+          "shape": 7,
+          "type": "*",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "潜在",
+          "name": "潜在",
+          "type": "LATENT",
+          "links": null
+        },
+        {
+          "label": "宽度",
+          "name": "宽度",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "label": "高度",
+          "name": "高度",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "label": "帧数",
+          "name": "帧数",
+          "type": "INT",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MuyeSizeSelector",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "832x1216 - 2:3",
+        1,
+        0,
+        "无",
+        0,
+        0
+      ]
+    },
+    {
+      "id": 10,
+      "type": "BatchTextReplace",
+      "pos": [
+        -372.3414306640625,
+        -757.8299560546875
+      ],
+      "size": [
+        270,
+        178
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "输入文本",
+          "name": "输入文本",
+          "type": "STRING",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "替换后列表",
+          "name": "替换后列表",
+          "shape": 6,
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "BatchTextReplace",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "id": 4,
+      "type": "MaskColorize",
+      "pos": [
+        -1296.6947021484375,
+        -474.8404846191406
+      ],
+      "size": [
+        270,
+        98
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "图像",
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "label": "遮罩",
+          "name": "遮罩",
+          "type": "MASK",
+          "link": null
+        },
+        {
+          "label": "颜色输入",
+          "name": "颜色输入",
+          "shape": 7,
+          "type": "COLOR",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "上色图像",
+          "name": "上色图像",
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MaskColorize",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "白"
+      ]
+    },
+    {
+      "id": 12,
+      "type": "TextListSplit",
+      "pos": [
+        -312.07763671875,
+        -289.7993469238281
+      ],
+      "size": [
+        140,
+        26
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "文本",
+          "name": "文本",
+          "type": "STRING",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "输出",
+          "name": "输出",
+          "shape": 6,
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "TextListSplit",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 11,
+      "type": "MuyeTextEditOutput",
+      "pos": [
+        -399.5045166015625,
+        -510.64739990234375
+      ],
+      "size": [
+        348.3041687011719,
+        150.5847930908203
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "文本",
+          "name": "文本",
+          "shape": 6,
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MuyeTextEditOutput",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "",
+        [
+          false,
+          true
+        ]
+      ]
+    },
+    {
+      "id": 13,
+      "type": "TextOverlayImage",
+      "pos": [
+        -366.8525085449219,
+        -193.56898498535156
+      ],
+      "size": [
+        270,
+        222
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "图像",
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "label": "文字颜色",
+          "name": "文字颜色",
+          "shape": 7,
+          "type": "*",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "图像",
+          "name": "图像",
+          "type": "IMAGE",
+          "links": null
+        },
+        {
+          "label": "文字遮罩",
+          "name": "文字遮罩",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "TextOverlayImage",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "",
+        "NotoSansSC-VF",
+        128,
+        "黑",
+        "横向",
+        384,
+        512
+      ]
+    },
+    {
+      "id": 16,
+      "type": "MuyeLoadImage",
+      "pos": [
+        137.5697479248047,
+        -342.91839599609375
+      ],
+      "size": [
+        290.237548828125,
+        391.9526672363281
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "图像",
+          "name": "图像",
+          "type": "IMAGE",
+          "links": null
+        },
+        {
+          "label": "遮罩",
+          "name": "遮罩",
+          "type": "MASK",
+          "links": null
+        },
+        {
+          "label": "文件名称",
+          "name": "文件名称",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MuyeLoadImage",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "example.png",
+        "image"
+      ]
+    },
+    {
+      "id": 23,
+      "type": "easy showAnything",
+      "pos": [
+        -1623.65771484375,
+        690.98046875
+      ],
+      "size": [
+        210,
+        88
+      ],
+      "flags": {},
+      "order": 69,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 4
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.0",
+        "Node name for S&R": "easy showAnything",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "3825"
+      ]
+    },
+    {
+      "id": 19,
+      "type": "AudioToFPS",
+      "pos": [
+        -1992.072021484375,
+        590.7782592773438
+      ],
+      "size": [
+        270,
+        126
+      ],
+      "flags": {},
+      "order": 42,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "音频",
+          "name": "音频",
+          "type": "AUDIO",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "label": "音频时长(s)",
+          "name": "音频时长(s)",
+          "type": "INT",
+          "links": [
+            3
+          ]
+        },
+        {
+          "label": "FPS",
+          "name": "FPS",
+          "type": "INT",
+          "links": [
+            4
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AudioToFPS",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        25,
+        8,
+        true
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 24,
+      "type": "AudioToFPS",
+      "pos": [
+        -1992.398193359375,
+        805.2622680664062
+      ],
+      "size": [
+        270,
+        126
+      ],
+      "flags": {},
+      "order": 43,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "音频",
+          "name": "音频",
+          "type": "AUDIO",
+          "link": 5
+        }
+      ],
+      "outputs": [
+        {
+          "label": "音频时长(s)",
+          "name": "音频时长(s)",
+          "type": "INT",
+          "links": [
+            6
+          ]
+        },
+        {
+          "label": "FPS",
+          "name": "FPS",
+          "type": "INT",
+          "links": [
+            7
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AudioToFPS",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        25,
+        8,
+        false
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 25,
+      "type": "easy showAnything",
+      "pos": [
+        -1430.09619140625,
+        800.7559814453125
+      ],
+      "size": [
+        210,
+        88
+      ],
+      "flags": {},
+      "order": 70,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 6
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.0",
+        "Node name for S&R": "easy showAnything",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "153"
+      ]
+    },
+    {
+      "id": 26,
+      "type": "easy showAnything",
+      "pos": [
+        -1625.497802734375,
+        920.3502807617188
+      ],
+      "size": [
+        210,
+        88
+      ],
+      "flags": {},
+      "order": 71,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.0",
+        "Node name for S&R": "easy showAnything",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "3824"
+      ]
+    },
+    {
+      "id": 20,
+      "type": "LoadAudio",
+      "pos": [
+        -2350.567626953125,
+        701.8283081054688
+      ],
+      "size": [
+        270,
+        136
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "音频",
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [
+            1,
+            5
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "Node name for S&R": "LoadAudio",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "冰凌花-周深.mp3",
+        null,
+        null
+      ]
+    },
+    {
+      "id": 22,
+      "type": "easy showAnything",
+      "pos": [
+        -1472.2938232421875,
+        546.4935913085938
+      ],
+      "size": [
+        210,
+        88
+      ],
+      "flags": {},
+      "order": 68,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.0",
+        "Node name for S&R": "easy showAnything",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "153"
+      ]
+    },
+    {
+      "id": 31,
+      "type": "MuyeTextEditOutput",
+      "pos": [
+        -2174.878173828125,
+        1281.089111328125
+      ],
+      "size": [
+        255.5554656982422,
+        93
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "文本",
+          "name": "文本",
+          "shape": 6,
+          "type": "STRING",
+          "links": [
+            10
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MuyeTextEditOutput",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "6565.565656",
+        [
+          false,
+          true
+        ]
+      ]
+    },
+    {
+      "id": 32,
+      "type": "MuyeTextEditOutput",
+      "pos": [
+        -2176.806396484375,
+        1427.554443359375
+      ],
+      "size": [
+        255.5554656982422,
+        93
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "文本",
+          "name": "文本",
+          "shape": 6,
+          "type": "STRING",
+          "links": [
+            9
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MuyeTextEditOutput",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "464648",
+        [
+          false,
+          true
+        ]
+      ]
+    },
+    {
+      "id": 33,
+      "type": "Display Int (rgthree)",
+      "pos": [
+        -1438.5394287109375,
+        1228.405029296875
+      ],
+      "size": [
+        210,
+        88
+      ],
+      "flags": {},
+      "order": 72,
+      "mode": 2,
+      "inputs": [
+        {
+          "dir": 3,
+          "name": "input",
+          "type": "INT",
+          "link": 11
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "rgthree-comfy",
+        "ver": "1.0.2506230015",
+        "Node name for S&R": "Display Int (rgthree)",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": 34,
+      "type": "easy showAnything",
+      "pos": [
+        -1432.17138671875,
+        1438.170166015625
+      ],
+      "size": [
+        210,
+        88
+      ],
+      "flags": {},
+      "order": 73,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 12
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.0",
+        "Node name for S&R": "easy showAnything",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "45687220438.47286"
+      ]
+    },
+    {
+      "id": 30,
+      "type": "MuyeTextEditOutput",
+      "pos": [
+        -2174.499267578125,
+        1131.706298828125
+      ],
+      "size": [
+        255.5554656982422,
+        93
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "文本",
+          "name": "文本",
+          "shape": 6,
+          "type": "STRING",
+          "links": [
+            8
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MuyeTextEditOutput",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "6565",
+        [
+          false,
+          true
+        ]
+      ]
+    },
+    {
+      "id": 35,
+      "type": "easy int",
+      "pos": [
+        -2161.025390625,
+        1582.3348388671875
+      ],
+      "size": [
+        210,
+        64.7502670288086
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "整数",
+          "name": "int",
+          "type": "INT",
+          "links": [
+            13
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.0",
+        "Node name for S&R": "easy int",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        150
+      ]
+    },
+    {
+      "id": 29,
+      "type": "MuyeMathCalculator",
+      "pos": [
+        -1813.8662109375,
+        1274.6898193359375
+      ],
+      "size": [
+        294.89227294921875,
+        177.53790283203125
+      ],
+      "flags": {},
+      "order": 44,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "a",
+          "name": "a",
+          "shape": 7,
+          "type": "*",
+          "link": 8
+        },
+        {
+          "label": "b",
+          "name": "b",
+          "shape": 7,
+          "type": "*",
+          "link": 10
+        },
+        {
+          "label": "c",
+          "name": "c",
+          "shape": 7,
+          "type": "*",
+          "link": 14
+        },
+        {
+          "label": "d",
+          "name": "d",
+          "shape": 7,
+          "type": "*",
+          "link": 9
+        },
+        {
+          "label": "e",
+          "name": "e",
+          "shape": 7,
+          "type": "*",
+          "link": 13
+        }
+      ],
+      "outputs": [
+        {
+          "label": "整数",
+          "name": "整数",
+          "type": "INT",
+          "links": [
+            11
+          ]
+        },
+        {
+          "label": "浮点",
+          "name": "浮点",
+          "type": "FLOAT",
+          "links": [
+            12
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MuyeMathCalculator",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "(a+b)*d/e+c",
+        [
+          false,
+          true
+        ]
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 36,
+      "type": "MuyeTextEditOutput",
+      "pos": [
+        -2621.300048828125,
+        1347.5546875
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {},
+      "order": 18,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "文本",
+          "name": "文本",
+          "shape": 6,
+          "type": "STRING",
+          "links": [
+            14
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MuyeTextEditOutput",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "45646546498",
+        [
+          false,
+          true
+        ]
+      ]
+    },
+    {
+      "id": 38,
+      "type": "easy showAnything",
+      "pos": [
+        -2069.265869140625,
+        1825.1192626953125
+      ],
+      "size": [
+        210,
+        88
+      ],
+      "flags": {},
+      "order": 48,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 15
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.0",
+        "Node name for S&R": "easy showAnything",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "832"
+      ]
+    },
+    {
+      "id": 39,
+      "type": "easy showAnything",
+      "pos": [
+        -2069.265869140625,
+        1985.1192626953125
+      ],
+      "size": [
+        210,
+        88
+      ],
+      "flags": {},
+      "order": 49,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 16
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.0",
+        "Node name for S&R": "easy showAnything",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "1216"
+      ]
+    },
+    {
+      "id": 40,
+      "type": "easy showAnything",
+      "pos": [
+        -2069.265869140625,
+        2155.11865234375
+      ],
+      "size": [
+        210,
+        88
+      ],
+      "flags": {},
+      "order": 50,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 17
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.0",
+        "Node name for S&R": "easy showAnything",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "0"
+      ]
+    },
+    {
+      "id": 42,
+      "type": "easy showAnything",
+      "pos": [
+        -1379.2664794921875,
+        1845.1192626953125
+      ],
+      "size": [
+        210,
+        88
+      ],
+      "flags": {},
+      "order": 45,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 18
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.0",
+        "Node name for S&R": "easy showAnything",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "1024"
+      ]
+    },
+    {
+      "id": 43,
+      "type": "easy showAnything",
+      "pos": [
+        -1379.2664794921875,
+        2015.1192626953125
+      ],
+      "size": [
+        210,
+        88
+      ],
+      "flags": {},
+      "order": 46,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 19
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.0",
+        "Node name for S&R": "easy showAnything",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "1536"
+      ]
+    },
+    {
+      "id": 44,
+      "type": "easy showAnything",
+      "pos": [
+        -1369.2664794921875,
+        2175.11865234375
+      ],
+      "size": [
+        210,
+        88
+      ],
+      "flags": {},
+      "order": 47,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 20
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.0",
+        "Node name for S&R": "easy showAnything",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "0"
+      ]
+    },
+    {
+      "id": 45,
+      "type": "MuyeSizeSelector",
+      "pos": [
+        -1789.2664794921875,
+        1915.1192626953125
+      ],
+      "size": [
+        270,
+        238
+      ],
+      "flags": {},
+      "order": 19,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "宽",
+          "name": "宽",
+          "shape": 7,
+          "type": "*",
+          "link": null
+        },
+        {
+          "label": "高",
+          "name": "高",
+          "shape": 7,
+          "type": "*",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "潜在",
+          "name": "潜在",
+          "type": "LATENT",
+          "links": null
+        },
+        {
+          "label": "宽度",
+          "name": "宽度",
+          "type": "INT",
+          "links": [
+            18
+          ]
+        },
+        {
+          "label": "高度",
+          "name": "高度",
+          "type": "INT",
+          "links": [
+            19
+          ]
+        },
+        {
+          "label": "帧数",
+          "name": "帧数",
+          "type": "INT",
+          "links": [
+            20
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MuyeSizeSelector",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "832x1216 - 2:3",
+        1,
+        1536,
+        "2 3",
+        0,
+        0
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 37,
+      "type": "MuyeSizeSelector",
+      "pos": [
+        -2479.265869140625,
+        1895.1192626953125
+      ],
+      "size": [
+        270,
+        238
+      ],
+      "flags": {},
+      "order": 20,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "宽",
+          "name": "宽",
+          "shape": 7,
+          "type": "*",
+          "link": null
+        },
+        {
+          "label": "高",
+          "name": "高",
+          "shape": 7,
+          "type": "*",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "潜在",
+          "name": "潜在",
+          "type": "LATENT",
+          "links": null
+        },
+        {
+          "label": "宽度",
+          "name": "宽度",
+          "type": "INT",
+          "links": [
+            15
+          ]
+        },
+        {
+          "label": "高度",
+          "name": "高度",
+          "type": "INT",
+          "links": [
+            16
+          ]
+        },
+        {
+          "label": "帧数",
+          "name": "帧数",
+          "type": "INT",
+          "links": [
+            17
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MuyeSizeSelector",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "832x1216 - 2:3",
+        1,
+        0,
+        "无",
+        0,
+        0
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 41,
+      "type": "Note",
+      "pos": [
+        -2859.265869140625,
+        1895.1192626953125
+      ],
+      "size": [
+        342.08233642578125,
+        301.8746643066406
+      ],
+      "flags": {},
+      "order": 21,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "优先级： 左侧输入端口>边长覆盖>分辨率预设 \n\n长边覆盖，例如将比例设置为“2 3”，那么你的长边设置为1216时，会自动计算短边为832\n\n比例可以输入的时候，无论是 “，”“。”“.”或者空格作为间隔符号都可以\n\n同时支持图片模型和视频模型"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 46,
+      "type": "MaskColorize",
+      "pos": [
+        -350,
+        630
+      ],
+      "size": [
+        270,
+        98
+      ],
+      "flags": {},
+      "order": 51,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "图像",
+          "type": "IMAGE",
+          "link": 22
+        },
+        {
+          "label": "遮罩",
+          "name": "遮罩",
+          "type": "MASK",
+          "link": 23
+        },
+        {
+          "label": "颜色输入",
+          "name": "颜色输入",
+          "shape": 7,
+          "type": "COLOR",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "上色图像",
+          "name": "上色图像",
+          "type": "IMAGE",
+          "links": [
+            24
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MaskColorize",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "红"
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 49,
+      "type": "PreviewImage",
+      "pos": [
+        30,
+        540
+      ],
+      "size": [
+        220.4837188720703,
+        258
+      ],
+      "flags": {},
+      "order": 74,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 24
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "Node name for S&R": "PreviewImage",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 52,
+      "type": "PreviewImage",
+      "pos": [
+        60,
+        900
+      ],
+      "size": [
+        210,
+        258
+      ],
+      "flags": {},
+      "order": 95,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 28
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "Node name for S&R": "PreviewImage",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 51,
+      "type": "MaskColorize",
+      "pos": [
+        -270,
+        850
+      ],
+      "size": [
+        270,
+        98
+      ],
+      "flags": {},
+      "order": 75,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "图像",
+          "type": "IMAGE",
+          "link": 27
+        },
+        {
+          "label": "遮罩",
+          "name": "遮罩",
+          "type": "MASK",
+          "link": 26
+        },
+        {
+          "label": "颜色输入",
+          "name": "颜色输入",
+          "shape": 7,
+          "type": "COLOR",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "上色图像",
+          "name": "上色图像",
+          "type": "IMAGE",
+          "links": [
+            28
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MaskColorize",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "红"
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 50,
+      "type": "MaskFillHoles",
+      "pos": [
+        -470,
+        1000
+      ],
+      "size": [
+        140,
+        26
+      ],
+      "flags": {},
+      "order": 52,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "遮罩",
+          "name": "遮罩",
+          "type": "MASK",
+          "link": 25
+        }
+      ],
+      "outputs": [
+        {
+          "label": "填充遮罩",
+          "name": "填充遮罩",
+          "type": "MASK",
+          "links": [
+            26
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MaskFillHoles",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 48,
+      "type": "MuyeLoadImage",
+      "pos": [
+        -830,
+        660
+      ],
+      "size": [
+        290.237548828125,
+        391.9526672363281
+      ],
+      "flags": {},
+      "order": 22,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "图像",
+          "name": "图像",
+          "type": "IMAGE",
+          "links": [
+            22,
+            27
+          ]
+        },
+        {
+          "label": "遮罩",
+          "name": "遮罩",
+          "type": "MASK",
+          "links": [
+            23,
+            25
+          ]
+        },
+        {
+          "label": "文件名称",
+          "name": "文件名称",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MuyeLoadImage",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "clipspace/clipspace-mask-4554980.png [input]",
+        "image"
+      ]
+    },
+    {
+      "id": 53,
+      "type": "MaskConcatenate",
+      "pos": [
+        -356.0691833496094,
+        1470.4322509765625
+      ],
+      "size": [
+        270,
+        102
+      ],
+      "flags": {},
+      "order": 76,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "遮罩1",
+          "name": "遮罩1",
+          "type": "MASK",
+          "link": 39
+        },
+        {
+          "label": "遮罩2",
+          "name": "遮罩2",
+          "type": "MASK",
+          "link": 40
+        }
+      ],
+      "outputs": [
+        {
+          "label": "拼接遮罩",
+          "name": "拼接遮罩",
+          "type": "MASK",
+          "links": [
+            37
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MaskConcatenate",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        false,
+        "左右"
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 66,
+      "type": "MaskPreview+",
+      "pos": [
+        1.2899048328399658,
+        1735.7437744140625
+      ],
+      "size": [
+        529.7928466796875,
+        302.6720275878906
+      ],
+      "flags": {},
+      "order": 97,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "遮罩",
+          "name": "mask",
+          "type": "MASK",
+          "link": 48
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfyui_essentials",
+        "ver": "1.1.0",
+        "Node name for S&R": "MaskPreview+",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 67,
+      "type": "MaskPreview+",
+      "pos": [
+        47.59742736816406,
+        2164.44970703125
+      ],
+      "size": [
+        508.36810302734375,
+        433.2941589355469
+      ],
+      "flags": {},
+      "order": 98,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "遮罩",
+          "name": "mask",
+          "type": "MASK",
+          "link": 47
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfyui_essentials",
+        "ver": "1.1.0",
+        "Node name for S&R": "MaskPreview+",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 62,
+      "type": "MaskPreview+",
+      "pos": [
+        20.390483856201172,
+        1375.843505859375
+      ],
+      "size": [
+        501.456787109375,
+        266.29345703125
+      ],
+      "flags": {},
+      "order": 96,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "遮罩",
+          "name": "mask",
+          "type": "MASK",
+          "link": 37
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfyui_essentials",
+        "ver": "1.1.0",
+        "Node name for S&R": "MaskPreview+",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 64,
+      "type": "MaskConcatenate",
+      "pos": [
+        -366.8703308105469,
+        1820.669677734375
+      ],
+      "size": [
+        270,
+        102
+      ],
+      "flags": {},
+      "order": 77,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "遮罩1",
+          "name": "遮罩1",
+          "type": "MASK",
+          "link": 43
+        },
+        {
+          "label": "遮罩2",
+          "name": "遮罩2",
+          "type": "MASK",
+          "link": 44
+        }
+      ],
+      "outputs": [
+        {
+          "label": "拼接遮罩",
+          "name": "拼接遮罩",
+          "type": "MASK",
+          "links": [
+            48
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MaskConcatenate",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        true,
+        "左右"
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 60,
+      "type": "MuyeLoadImage",
+      "pos": [
+        -930.4309692382812,
+        1399.957275390625
+      ],
+      "size": [
+        290.237548828125,
+        391.9526672363281
+      ],
+      "flags": {},
+      "order": 23,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "图像",
+          "name": "图像",
+          "type": "IMAGE",
+          "links": []
+        },
+        {
+          "label": "遮罩",
+          "name": "遮罩",
+          "type": "MASK",
+          "links": [
+            39,
+            43,
+            46
+          ]
+        },
+        {
+          "label": "文件名称",
+          "name": "文件名称",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MuyeLoadImage",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "clipspace/clipspace-mask-4554980.png [input]",
+        "image"
+      ]
+    },
+    {
+      "id": 68,
+      "type": "MuyeLoadImage",
+      "pos": [
+        -933.1907348632812,
+        1949.868408203125
+      ],
+      "size": [
+        290.237548828125,
+        391.9526672363281
+      ],
+      "flags": {},
+      "order": 24,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "图像",
+          "name": "图像",
+          "type": "IMAGE",
+          "links": []
+        },
+        {
+          "label": "遮罩",
+          "name": "遮罩",
+          "type": "MASK",
+          "links": [
+            49
+          ]
+        },
+        {
+          "label": "文件名称",
+          "name": "文件名称",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MuyeLoadImage",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "clipspace/clipspace-mask-4916204.5.png [input]",
+        "image"
+      ]
+    },
+    {
+      "id": 59,
+      "type": "MaskFillHoles",
+      "pos": [
+        -593.991943359375,
+        1970.5509033203125
+      ],
+      "size": [
+        140,
+        26
+      ],
+      "flags": {},
+      "order": 53,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "遮罩",
+          "name": "遮罩",
+          "type": "MASK",
+          "link": 49
+        }
+      ],
+      "outputs": [
+        {
+          "label": "填充遮罩",
+          "name": "填充遮罩",
+          "type": "MASK",
+          "links": [
+            40,
+            44,
+            45
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MaskFillHoles",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 65,
+      "type": "MaskConcatenate",
+      "pos": [
+        -357.592529296875,
+        2150.59423828125
+      ],
+      "size": [
+        270,
+        102
+      ],
+      "flags": {},
+      "order": 78,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "遮罩1",
+          "name": "遮罩1",
+          "type": "MASK",
+          "link": 46
+        },
+        {
+          "label": "遮罩2",
+          "name": "遮罩2",
+          "type": "MASK",
+          "link": 45
+        }
+      ],
+      "outputs": [
+        {
+          "label": "拼接遮罩",
+          "name": "拼接遮罩",
+          "type": "MASK",
+          "links": [
+            47
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MaskConcatenate",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        true,
+        "上下"
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 83,
+      "type": "LoadVideo",
+      "pos": [
+        -3132.0888671875,
+        2741.037353515625
+      ],
+      "size": [
+        270,
+        554.0001220703125
+      ],
+      "flags": {},
+      "order": 25,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VIDEO",
+          "type": "VIDEO",
+          "links": [
+            69
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "Node name for S&R": "LoadVideo",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "ComfyUI_00117_.mp4",
+        "image"
+      ]
+    },
+    {
+      "id": 87,
+      "type": "PreviewImage",
+      "pos": [
+        -2455.96435546875,
+        2590.497802734375
+      ],
+      "size": [
+        1343.9415283203125,
+        733.3931274414062
+      ],
+      "flags": {},
+      "order": 99,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 76
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "Node name for S&R": "PreviewImage",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 54,
+      "type": "MaskMergeList",
+      "pos": [
+        -2821.073974609375,
+        2610.6279296875
+      ],
+      "size": [
+        270,
+        82
+      ],
+      "flags": {},
+      "order": 108,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "遮罩",
+          "name": "遮罩",
+          "type": "MASK",
+          "link": 63
+        }
+      ],
+      "outputs": [
+        {
+          "label": "合并遮罩",
+          "name": "合并遮罩",
+          "type": "MASK",
+          "links": [
+            38
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MaskMergeList",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        false,
+        false
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 84,
+      "type": "GetVideoComponents",
+      "pos": [
+        -3047.03662109375,
+        2698.8095703125
+      ],
+      "size": [
+        140,
+        66
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 54,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "video",
+          "name": "video",
+          "type": "VIDEO",
+          "link": 69
+        }
+      ],
+      "outputs": [
+        {
+          "label": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "links": [
+            72
+          ]
+        },
+        {
+          "label": "audio",
+          "name": "audio",
+          "type": "AUDIO",
+          "links": null
+        },
+        {
+          "label": "fps",
+          "name": "fps",
+          "type": "FLOAT",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "Node name for S&R": "GetVideoComponents",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 88,
+      "type": "Note",
+      "pos": [
+        -3158.265380859375,
+        2495.92822265625
+      ],
+      "size": [
+        261.122314453125,
+        131.62538146972656
+      ],
+      "flags": {},
+      "order": 26,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "这个节点，会抓取所有图像中的遮罩，然后合并到一起，并取最大值输出\n常用于，视频面部修复工作流"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 63,
+      "type": "MaskPreview+",
+      "pos": [
+        -2831.323486328125,
+        2760.335205078125
+      ],
+      "size": [
+        331.0989685058594,
+        530.339599609375
+      ],
+      "flags": {},
+      "order": 110,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "遮罩",
+          "name": "mask",
+          "type": "MASK",
+          "link": 38
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfyui_essentials",
+        "ver": "1.1.0",
+        "Node name for S&R": "MaskPreview+",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 74,
+      "type": "MaskFillHoles",
+      "pos": [
+        -2805.469482421875,
+        2549.3291015625
+      ],
+      "size": [
+        140,
+        26
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 100,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "遮罩",
+          "name": "遮罩",
+          "type": "MASK",
+          "link": 74
+        }
+      ],
+      "outputs": [
+        {
+          "label": "填充遮罩",
+          "name": "填充遮罩",
+          "type": "MASK",
+          "links": [
+            63
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MaskFillHoles",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 86,
+      "type": "LayerMask: PersonMaskUltra V2",
+      "pos": [
+        -2824.79150390625,
+        2511.6806640625
+      ],
+      "size": [
+        270,
+        414
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 79,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 72
+        }
+      ],
+      "outputs": [
+        {
+          "label": "图像",
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            76
+          ]
+        },
+        {
+          "label": "遮罩",
+          "name": "mask",
+          "type": "MASK",
+          "links": [
+            74
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "ComfyUI_LayerStyle_Advance",
+        "ver": "0f9184100e626e3202568a7cf890b3b92685a168",
+        "Node name for S&R": "LayerMask: PersonMaskUltra V2",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        0.4,
+        "VITMatte",
+        6,
+        6,
+        0.01,
+        0.99,
+        true,
+        "cuda",
+        2
+      ],
+      "color": "rgba(27, 80, 119, 0.7)"
+    },
+    {
+      "id": 8,
+      "type": "MuyeFileReader",
+      "pos": [
+        -913.7123413085938,
+        -556.6591796875
+      ],
+      "size": [
+        400,
+        292
+      ],
+      "flags": {},
+      "order": 27,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "文件名称列表",
+          "name": "文件名称列表",
+          "shape": 6,
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "label": "文件总数",
+          "name": "文件总数",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "label": "图片",
+          "name": "图片",
+          "shape": 6,
+          "type": "IMAGE",
+          "links": null
+        },
+        {
+          "label": "文本",
+          "name": "文本",
+          "shape": 6,
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MuyeFileReader",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "",
+        "0",
+        false,
+        "0",
+        "0",
+        "文件名称",
+        "正序",
+        [
+          false,
+          true
+        ]
+      ]
+    },
+    {
+      "id": 99,
+      "type": "PreviewImage",
+      "pos": [
+        1640,
+        650
+      ],
+      "size": [
+        290.06329345703125,
+        299.48272705078125
+      ],
+      "flags": {},
+      "order": 57,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 88
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "Node name for S&R": "PreviewImage",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 97,
+      "type": "easy showAnything",
+      "pos": [
+        1130,
+        780
+      ],
+      "size": [
+        210,
+        327.9883728027344
+      ],
+      "flags": {},
+      "order": 58,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 87
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.0",
+        "Node name for S&R": "easy showAnything",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "寥落古行宫，宫花寂寞红。\n白头宫女在，闲坐说玄宗。",
+        "曾经富丽堂皇的古行宫已是一片荒凉冷落，宫中艳丽的花儿在寂寞寥落中开放。\n幸存的几个满头白发的宫女，闲坐无事只能谈论着玄宗轶事。"
+      ]
+    },
+    {
+      "id": 96,
+      "type": "easy showAnything",
+      "pos": [
+        1170,
+        580
+      ],
+      "size": [
+        210,
+        88
+      ],
+      "flags": {},
+      "order": 56,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 86
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.0",
+        "Node name for S&R": "easy showAnything",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "6"
+      ]
+    },
+    {
+      "id": 95,
+      "type": "easy showAnything",
+      "pos": [
+        1380,
+        520
+      ],
+      "size": [
+        210,
+        611.4334716796875
+      ],
+      "flags": {},
+      "order": 55,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 85
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.0",
+        "Node name for S&R": "easy showAnything",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "ComfyUI_temp_imoli_00015_.png",
+        "ComfyUI_temp_mynbi_00001_.png",
+        "ComfyUI_temp_ndloo_00001_.png",
+        "ComfyUI_temp_rpirx_00002_.png",
+        "行宫.txt",
+        "释义.txt"
+      ]
+    },
+    {
+      "id": 101,
+      "type": "easy showAnything",
+      "pos": [
+        2460,
+        800
+      ],
+      "size": [
+        210,
+        327.9883728027344
+      ],
+      "flags": {},
+      "order": 83,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 90
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.0",
+        "Node name for S&R": "easy showAnything",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "寥落古行宫，宫花寂寞红。\n白头宫女在，闲坐说玄宗。"
+      ]
+    },
+    {
+      "id": 89,
+      "type": "MuyeFileReader",
+      "pos": [
+        680,
+        670
+      ],
+      "size": [
+        396.95904541015625,
+        341.34613037109375
+      ],
+      "flags": {},
+      "order": 28,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "文件名称列表",
+          "name": "文件名称列表",
+          "shape": 6,
+          "type": "STRING",
+          "links": [
+            85
+          ]
+        },
+        {
+          "label": "文件总数",
+          "name": "文件总数",
+          "type": "INT",
+          "links": [
+            86
+          ]
+        },
+        {
+          "label": "图片",
+          "name": "图片",
+          "shape": 6,
+          "type": "IMAGE",
+          "links": [
+            88
+          ]
+        },
+        {
+          "label": "文本",
+          "name": "文本",
+          "shape": 6,
+          "type": "STRING",
+          "links": [
+            87
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MuyeFileReader",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "F:\\桌面\\新建文件夹",
+        "0",
+        false,
+        "0",
+        "0",
+        "文件名称",
+        "正序",
+        [
+          false,
+          true
+        ]
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 102,
+      "type": "easy showAnything",
+      "pos": [
+        2495.438720703125,
+        584.7953491210938
+      ],
+      "size": [
+        210,
+        88
+      ],
+      "flags": {},
+      "order": 81,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 91
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.0",
+        "Node name for S&R": "easy showAnything",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "6"
+      ]
+    },
+    {
+      "id": 103,
+      "type": "easy showAnything",
+      "pos": [
+        2719.123046875,
+        550.643310546875
+      ],
+      "size": [
+        210,
+        611.4334716796875
+      ],
+      "flags": {},
+      "order": 80,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 92
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.0",
+        "Node name for S&R": "easy showAnything",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "ComfyUI_temp_imoli_00015_"
+      ]
+    },
+    {
+      "id": 100,
+      "type": "PreviewImage",
+      "pos": [
+        2970,
+        670
+      ],
+      "size": [
+        290.06329345703125,
+        299.48272705078125
+      ],
+      "flags": {},
+      "order": 82,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 89
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "Node name for S&R": "PreviewImage",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 105,
+      "type": "PrimitiveString",
+      "pos": [
+        2018.501708984375,
+        1108.525146484375
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 29,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "STRING",
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            93,
+            94,
+            95
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "Node name for S&R": "PrimitiveString",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "1"
+      ]
+    },
+    {
+      "id": 104,
+      "type": "MuyeFileReader",
+      "pos": [
+        2005.4385986328125,
+        689.23974609375
+      ],
+      "size": [
+        413.6842041015625,
+        323.1004943847656
+      ],
+      "flags": {},
+      "order": 59,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "文件名称输出序号",
+          "name": "文件名称输出序号",
+          "type": "STRING",
+          "widget": {
+            "name": "文件名称输出序号"
+          },
+          "link": 93
+        },
+        {
+          "label": "图像输出序号",
+          "name": "图像输出序号",
+          "type": "STRING",
+          "widget": {
+            "name": "图像输出序号"
+          },
+          "link": 94
+        },
+        {
+          "label": "文本输出序号",
+          "name": "文本输出序号",
+          "type": "STRING",
+          "widget": {
+            "name": "文本输出序号"
+          },
+          "link": 95
+        }
+      ],
+      "outputs": [
+        {
+          "label": "文件名称列表",
+          "name": "文件名称列表",
+          "shape": 6,
+          "type": "STRING",
+          "links": [
+            92
+          ]
+        },
+        {
+          "label": "文件总数",
+          "name": "文件总数",
+          "type": "INT",
+          "links": [
+            91
+          ]
+        },
+        {
+          "label": "图片",
+          "name": "图片",
+          "shape": 6,
+          "type": "IMAGE",
+          "links": [
+            89
+          ]
+        },
+        {
+          "label": "文本",
+          "name": "文本",
+          "shape": 6,
+          "type": "STRING",
+          "links": [
+            90
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MuyeFileReader",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "\"F:\\桌面\\新建文件夹\"",
+        "0",
+        true,
+        "0",
+        "0",
+        "文件名称",
+        "正序",
+        [
+          false,
+          true
+        ]
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 118,
+      "type": "easy showAnything",
+      "pos": [
+        1183.391845703125,
+        1700.29443359375
+      ],
+      "size": [
+        210,
+        327.9883728027344
+      ],
+      "flags": {},
+      "order": 63,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 122
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.0",
+        "Node name for S&R": "easy showAnything",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "寥落古行宫，宫花寂寞红。\n白头宫女在，闲坐说玄宗。",
+        "曾经富丽堂皇的古行宫已是一片荒凉冷落，宫中艳丽的花儿在寂寞寥落中开放。\n幸存的几个满头白发的宫女，闲坐无事只能谈论着玄宗轶事。"
+      ]
+    },
+    {
+      "id": 120,
+      "type": "easy showAnything",
+      "pos": [
+        1433.391845703125,
+        1440.29443359375
+      ],
+      "size": [
+        210,
+        611.4334716796875
+      ],
+      "flags": {},
+      "order": 60,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 124
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.0",
+        "Node name for S&R": "easy showAnything",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "ComfyUI_temp_imoli_00015_.png",
+        "ComfyUI_temp_mynbi_00001_.png",
+        "ComfyUI_temp_ndloo_00001_.png",
+        "ComfyUI_temp_rpirx_00002_.png",
+        "行宫.txt",
+        "释义.txt"
+      ]
+    },
+    {
+      "id": 114,
+      "type": "MuyeTextEditOutput",
+      "pos": [
+        1730.1278076171875,
+        1744.848876953125
+      ],
+      "size": [
+        286.1031799316406,
+        133.99786376953125
+      ],
+      "flags": {},
+      "order": 30,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "文本",
+          "name": "文本",
+          "shape": 6,
+          "type": "STRING",
+          "links": [
+            129,
+            131
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MuyeTextEditOutput",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "木叶222",
+        [
+          false,
+          true
+        ]
+      ]
+    },
+    {
+      "id": 119,
+      "type": "easy showAnything",
+      "pos": [
+        1171.5577392578125,
+        1478.8697509765625
+      ],
+      "size": [
+        210,
+        88
+      ],
+      "flags": {},
+      "order": 61,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 123
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.0",
+        "Node name for S&R": "easy showAnything",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "6"
+      ]
+    },
+    {
+      "id": 124,
+      "type": "SaveFilesToLocal",
+      "pos": [
+        -860.8629760742188,
+        -163.7186737060547
+      ],
+      "size": [
+        270,
+        222
+      ],
+      "flags": {},
+      "order": 31,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "图片",
+          "name": "图片",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "label": "文本",
+          "name": "文本",
+          "shape": 7,
+          "type": "STRING",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "图片名称",
+          "name": "图片名称",
+          "shape": 6,
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "label": "文本名称",
+          "name": "文本名称",
+          "shape": 6,
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "widget_ue_connectable": {},
+        "Node name for S&R": "SaveFilesToLocal"
+      },
+      "widgets_values": [
+        "",
+        ".png",
+        "请输入",
+        "",
+        ".txt",
+        "请输入",
+        "追加"
+      ]
+    },
+    {
+      "id": 113,
+      "type": "MuyeTextEditOutput",
+      "pos": [
+        1733.4644775390625,
+        1941.6876220703125
+      ],
+      "size": [
+        286.1031799316406,
+        133.99786376953125
+      ],
+      "flags": {},
+      "order": 32,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "文本",
+          "name": "文本",
+          "shape": 6,
+          "type": "STRING",
+          "links": [
+            130,
+            132
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MuyeTextEditOutput",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "F:\\桌面\\新建文件夹\\新建文件夹",
+        [
+          false,
+          true
+        ]
+      ]
+    },
+    {
+      "id": 123,
+      "type": "SaveFilesToLocal",
+      "pos": [
+        2092.06591796875,
+        1441.6689453125
+      ],
+      "size": [
+        270,
+        222
+      ],
+      "flags": {},
+      "order": 64,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "图片",
+          "name": "图片",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 127
+        },
+        {
+          "label": "文本",
+          "name": "文本",
+          "shape": 7,
+          "type": "STRING",
+          "link": 128
+        },
+        {
+          "label": "图片文件名",
+          "name": "图片文件名",
+          "type": "STRING",
+          "widget": {
+            "name": "图片文件名"
+          },
+          "link": 129
+        },
+        {
+          "label": "图片保存路径",
+          "name": "图片保存路径",
+          "type": "STRING",
+          "widget": {
+            "name": "图片保存路径"
+          },
+          "link": 130
+        },
+        {
+          "label": "文本文件名",
+          "name": "文本文件名",
+          "type": "STRING",
+          "widget": {
+            "name": "文本文件名"
+          },
+          "link": 131
+        },
+        {
+          "label": "文本保存路径",
+          "name": "文本保存路径",
+          "type": "STRING",
+          "widget": {
+            "name": "文本保存路径"
+          },
+          "link": 132
+        }
+      ],
+      "outputs": [
+        {
+          "label": "图片名称",
+          "name": "图片名称",
+          "shape": 6,
+          "type": "STRING",
+          "links": [
+            133
+          ]
+        },
+        {
+          "label": "文本名称",
+          "name": "文本名称",
+          "shape": 6,
+          "type": "STRING",
+          "links": [
+            134
+          ]
+        }
+      ],
+      "properties": {
+        "widget_ue_connectable": {},
+        "Node name for S&R": "SaveFilesToLocal"
+      },
+      "widgets_values": [
+        "",
+        ".png",
+        "请输入",
+        "",
+        ".txt",
+        "请输入",
+        "追加"
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 121,
+      "type": "MuyeFileReader",
+      "pos": [
+        733.3916625976562,
+        1590.29443359375
+      ],
+      "size": [
+        396.95904541015625,
+        341.34613037109375
+      ],
+      "flags": {},
+      "order": 33,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "文件名称列表",
+          "name": "文件名称列表",
+          "shape": 6,
+          "type": "STRING",
+          "links": [
+            124
+          ]
+        },
+        {
+          "label": "文件总数",
+          "name": "文件总数",
+          "type": "INT",
+          "links": [
+            123
+          ]
+        },
+        {
+          "label": "图片",
+          "name": "图片",
+          "shape": 6,
+          "type": "IMAGE",
+          "links": [
+            127,
+            137
+          ]
+        },
+        {
+          "label": "文本",
+          "name": "文本",
+          "shape": 6,
+          "type": "STRING",
+          "links": [
+            122,
+            128
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MuyeFileReader",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "F:\\桌面\\新建文件夹",
+        "0",
+        false,
+        "0",
+        "0",
+        "文件名称",
+        "正序",
+        [
+          false,
+          true
+        ]
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 117,
+      "type": "PreviewImage",
+      "pos": [
+        1712.7430419921875,
+        1387.838134765625
+      ],
+      "size": [
+        290.06329345703125,
+        299.48272705078125
+      ],
+      "flags": {},
+      "order": 62,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 137
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "Node name for S&R": "PreviewImage",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 126,
+      "type": "easy showAnything",
+      "pos": [
+        2649.849609375,
+        1434.7005615234375
+      ],
+      "size": [
+        210,
+        226
+      ],
+      "flags": {},
+      "order": 85,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 134
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.0",
+        "widget_ue_connectable": {},
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "木叶222_04.txt",
+        "木叶222_05.txt",
+        "木叶222_06.txt",
+        "木叶222_07.txt"
+      ]
+    },
+    {
+      "id": 125,
+      "type": "easy showAnything",
+      "pos": [
+        2407.593505859375,
+        1434.9510498046875
+      ],
+      "size": [
+        210,
+        226
+      ],
+      "flags": {},
+      "order": 84,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 133
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.0",
+        "widget_ue_connectable": {},
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "木叶222_04.png",
+        "木叶222_05.png",
+        "木叶222_06.png",
+        "木叶222_07.png"
+      ]
+    },
+    {
+      "id": 129,
+      "type": "MuyeLoadImage",
+      "pos": [
+        2095.8798828125,
+        1739.4034423828125
+      ],
+      "size": [
+        745.9978637695312,
+        394.46142578125
+      ],
+      "flags": {},
+      "order": 34,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "图像",
+          "name": "图像",
+          "type": "IMAGE",
+          "links": null
+        },
+        {
+          "label": "遮罩",
+          "name": "遮罩",
+          "type": "MASK",
+          "links": null
+        },
+        {
+          "label": "文件名称",
+          "name": "文件名称",
+          "type": "STRING",
+          "links": [
+            138
+          ]
+        }
+      ],
+      "properties": {
+        "widget_ue_connectable": {},
+        "Node name for S&R": "MuyeLoadImage"
+      },
+      "widgets_values": [
+        "屏幕截图 2025-07-01 213209.png",
+        "image"
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 130,
+      "type": "easy showAnything",
+      "pos": [
+        2902.3818359375,
+        1748.2796630859375
+      ],
+      "size": [
+        251.81277465820312,
+        97.21629333496094
+      ],
+      "flags": {},
+      "order": 65,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 138
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.0",
+        "widget_ue_connectable": {},
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "屏幕截图 2025-07-01 213209.png"
+      ]
+    },
+    {
+      "id": 149,
+      "type": "MuyeLoadImage",
+      "pos": [
+        773.3853149414062,
+        2548.1328125
+      ],
+      "size": [
+        290.237548828125,
+        391.9526672363281
+      ],
+      "flags": {},
+      "order": 35,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "图像",
+          "name": "图像",
+          "type": "IMAGE",
+          "links": [
+            144
+          ]
+        },
+        {
+          "label": "遮罩",
+          "name": "遮罩",
+          "type": "MASK",
+          "links": null
+        },
+        {
+          "label": "文件名称",
+          "name": "文件名称",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "widget_ue_connectable": {},
+        "Node name for S&R": "MuyeLoadImage"
+      },
+      "widgets_values": [
+        "example.png",
+        "image"
+      ]
+    },
+    {
+      "id": 148,
+      "type": "MuyeTextEditOutput",
+      "pos": [
+        807.1024169921875,
+        3016.92919921875
+      ],
+      "size": [
+        210,
+        93
+      ],
+      "flags": {},
+      "order": 36,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "文本",
+          "name": "文本",
+          "shape": 6,
+          "type": "STRING",
+          "links": [
+            143
+          ]
+        }
+      ],
+      "properties": {
+        "widget_ue_connectable": {},
+        "Node name for S&R": "MuyeTextEditOutput"
+      },
+      "widgets_values": [
+        "长城",
+        [
+          false,
+          true
+        ]
+      ]
+    },
+    {
+      "id": 150,
+      "type": "PreviewImage",
+      "pos": [
+        1526.5322265625,
+        2509.42822265625
+      ],
+      "size": [
+        210,
+        258
+      ],
+      "flags": {},
+      "order": 86,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 145
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "widget_ue_connectable": {},
+        "Node name for S&R": "PreviewImage"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 171,
+      "type": "MuyeImageBlendingMode",
+      "pos": [
+        142.84780883789062,
+        -588.214111328125
+      ],
+      "size": [
+        270,
+        174
+      ],
+      "flags": {},
+      "order": 37,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "前景图像",
+          "name": "前景图像",
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "label": "背景图像",
+          "name": "背景图像",
+          "type": "IMAGE",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "混合图像",
+          "name": "混合图像",
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "properties": {
+        "widget_ue_connectable": {},
+        "Node name for S&R": "MuyeImageBlendingMode"
+      },
+      "widgets_values": [
+        "色相",
+        1,
+        "无",
+        "Lab",
+        "RGB"
+      ]
+    },
+    {
+      "id": 135,
+      "type": "TextOverlayImage",
+      "pos": [
+        1159.0408935546875,
+        2731.90234375
+      ],
+      "size": [
+        270,
+        222
+      ],
+      "flags": {},
+      "order": 66,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "图像",
+          "type": "IMAGE",
+          "link": 144
+        },
+        {
+          "label": "文字颜色",
+          "name": "文字颜色",
+          "shape": 7,
+          "type": "*",
+          "link": null
+        },
+        {
+          "label": "文本",
+          "name": "文本",
+          "type": "STRING",
+          "widget": {
+            "name": "文本"
+          },
+          "link": 143
+        }
+      ],
+      "outputs": [
+        {
+          "label": "图像",
+          "name": "图像",
+          "type": "IMAGE",
+          "links": [
+            145
+          ]
+        },
+        {
+          "label": "文字遮罩",
+          "name": "文字遮罩",
+          "type": "MASK",
+          "links": [
+            146,
+            174
+          ]
+        }
+      ],
+      "properties": {
+        "widget_ue_connectable": {},
+        "Node name for S&R": "TextOverlayImage"
+      },
+      "widgets_values": [
+        "",
+        "NotoSerifSC-VF",
+        279,
+        "红",
+        "横向",
+        384,
+        397
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 174,
+      "type": "MuyeLoadImage",
+      "pos": [
+        1847.0096435546875,
+        2764.156982421875
+      ],
+      "size": [
+        290.237548828125,
+        391.9526672363281
+      ],
+      "flags": {},
+      "order": 38,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "图像",
+          "name": "图像",
+          "type": "IMAGE",
+          "links": [
+            177
+          ]
+        },
+        {
+          "label": "遮罩",
+          "name": "遮罩",
+          "type": "MASK",
+          "links": null
+        },
+        {
+          "label": "文件名称",
+          "name": "文件名称",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "widget_ue_connectable": {},
+        "Node name for S&R": "MuyeLoadImage"
+      },
+      "widgets_values": [
+        "example.png",
+        "image"
+      ]
+    },
+    {
+      "id": 151,
+      "type": "MaskPreview+",
+      "pos": [
+        1552.8935546875,
+        2856.439453125
+      ],
+      "size": [
+        210,
+        258
+      ],
+      "flags": {},
+      "order": 87,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "遮罩",
+          "name": "mask",
+          "type": "MASK",
+          "link": 146
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfyui_essentials",
+        "ver": "1.1.0",
+        "widget_ue_connectable": {},
+        "Node name for S&R": "MaskPreview+"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 176,
+      "type": "MaskToImage",
+      "pos": [
+        1917.0936279296875,
+        2625.352783203125
+      ],
+      "size": [
+        140,
+        26
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 88,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "遮罩",
+          "name": "mask",
+          "type": "MASK",
+          "link": 174
+        }
+      ],
+      "outputs": [
+        {
+          "label": "图像",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            176
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "widget_ue_connectable": {},
+        "Node name for S&R": "MaskToImage"
+      }
+    },
+    {
+      "id": 177,
+      "type": "PreviewImage",
+      "pos": [
+        2643.3310546875,
+        2543.058349609375
+      ],
+      "size": [
+        492.47235107421875,
+        534.3863525390625
+      ],
+      "flags": {},
+      "order": 109,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 178
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "widget_ue_connectable": {},
+        "Node name for S&R": "PreviewImage"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 172,
+      "type": "MuyeImageBlendingMode",
+      "pos": [
+        2246.95654296875,
+        2616.1572265625
+      ],
+      "size": [
+        270,
+        174
+      ],
+      "flags": {},
+      "order": 101,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "前景图像",
+          "name": "前景图像",
+          "type": "IMAGE",
+          "link": 176
+        },
+        {
+          "label": "背景图像",
+          "name": "背景图像",
+          "type": "IMAGE",
+          "link": 177
+        }
+      ],
+      "outputs": [
+        {
+          "label": "混合图像",
+          "name": "混合图像",
+          "type": "IMAGE",
+          "links": [
+            178
+          ]
+        }
+      ],
+      "properties": {
+        "widget_ue_connectable": {},
+        "Node name for S&R": "MuyeImageBlendingMode"
+      },
+      "widgets_values": [
+        "色相",
+        0.31000000000000005,
+        "无",
+        "Lab",
+        "RGB"
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 178,
+      "type": "Note",
+      "pos": [
+        2243.87060546875,
+        2859.7509765625
+      ],
+      "size": [
+        292.8070983886719,
+        99.5321273803711
+      ],
+      "flags": {},
+      "order": 39,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "前景图像其实可以是一个透明水印，这个节点原本就是用来打水印的"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 17,
+      "type": "RemoveAlphaChannel",
+      "pos": [
+        144.70172119140625,
+        136.3043975830078
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 40,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "图像",
+          "type": "IMAGE",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "图像",
+          "name": "图像",
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RemoveAlphaChannel",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "黑"
+      ]
+    },
+    {
+      "id": 185,
+      "type": "PreviewImage",
+      "pos": [
+        -6.8265838623046875,
+        2793.71484375
+      ],
+      "size": [
+        140,
+        246
+      ],
+      "flags": {},
+      "order": 104,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 185
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "widget_ue_connectable": {},
+        "Node name for S&R": "PreviewImage"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 187,
+      "type": "PreviewImage",
+      "pos": [
+        208.65147399902344,
+        2796.829833984375
+      ],
+      "size": [
+        140,
+        246
+      ],
+      "flags": {},
+      "order": 103,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 189
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "widget_ue_connectable": {},
+        "Node name for S&R": "PreviewImage"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 188,
+      "type": "PreviewImage",
+      "pos": [
+        213.65151977539062,
+        3138.594970703125
+      ],
+      "size": [
+        140,
+        246
+      ],
+      "flags": {},
+      "order": 106,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 192
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "widget_ue_connectable": {},
+        "Node name for S&R": "PreviewImage"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 183,
+      "type": "RemoveAlphaChannel",
+      "pos": [
+        -559.5543212890625,
+        2910.466064453125
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 90,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "图像",
+          "type": "IMAGE",
+          "link": 182
+        }
+      ],
+      "outputs": [
+        {
+          "label": "图像",
+          "name": "图像",
+          "type": "IMAGE",
+          "links": [
+            189
+          ]
+        }
+      ],
+      "properties": {
+        "widget_ue_connectable": {},
+        "Node name for S&R": "RemoveAlphaChannel"
+      },
+      "widgets_values": [
+        "白"
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 181,
+      "type": "RemoveAlphaChannel",
+      "pos": [
+        -559.6422119140625,
+        3025.42041015625
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 89,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "图像",
+          "type": "IMAGE",
+          "link": 180
+        }
+      ],
+      "outputs": [
+        {
+          "label": "图像",
+          "name": "图像",
+          "type": "IMAGE",
+          "links": [
+            190
+          ]
+        }
+      ],
+      "properties": {
+        "widget_ue_connectable": {},
+        "Node name for S&R": "RemoveAlphaChannel"
+      },
+      "widgets_values": [
+        "灰"
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 190,
+      "type": "RemoveAlphaChannel",
+      "pos": [
+        -559.0574951171875,
+        3131.318115234375
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 92,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "图像",
+          "type": "IMAGE",
+          "link": 186
+        }
+      ],
+      "outputs": [
+        {
+          "label": "图像",
+          "name": "图像",
+          "type": "IMAGE",
+          "links": [
+            191
+          ]
+        }
+      ],
+      "properties": {
+        "widget_ue_connectable": {},
+        "Node name for S&R": "RemoveAlphaChannel"
+      },
+      "widgets_values": [
+        "红"
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 191,
+      "type": "RemoveAlphaChannel",
+      "pos": [
+        -558.626953125,
+        3233.41943359375
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 93,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "图像",
+          "type": "IMAGE",
+          "link": 187
+        }
+      ],
+      "outputs": [
+        {
+          "label": "图像",
+          "name": "图像",
+          "type": "IMAGE",
+          "links": [
+            192
+          ]
+        }
+      ],
+      "properties": {
+        "widget_ue_connectable": {},
+        "Node name for S&R": "RemoveAlphaChannel"
+      },
+      "widgets_values": [
+        "绿"
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 192,
+      "type": "RemoveAlphaChannel",
+      "pos": [
+        -556.4827880859375,
+        3343.51611328125
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 94,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "图像",
+          "type": "IMAGE",
+          "link": 188
+        }
+      ],
+      "outputs": [
+        {
+          "label": "图像",
+          "name": "图像",
+          "type": "IMAGE",
+          "links": [
+            193
+          ]
+        }
+      ],
+      "properties": {
+        "widget_ue_connectable": {},
+        "Node name for S&R": "RemoveAlphaChannel"
+      },
+      "widgets_values": [
+        "蓝"
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 189,
+      "type": "PreviewImage",
+      "pos": [
+        409.9378662109375,
+        2961.505615234375
+      ],
+      "size": [
+        140,
+        246
+      ],
+      "flags": {},
+      "order": 107,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 193
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "widget_ue_connectable": {},
+        "Node name for S&R": "PreviewImage"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 186,
+      "type": "PreviewImage",
+      "pos": [
+        -221.5421905517578,
+        2923.702392578125
+      ],
+      "size": [
+        140,
+        246
+      ],
+      "flags": {},
+      "order": 102,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 190
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "widget_ue_connectable": {},
+        "Node name for S&R": "PreviewImage"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 184,
+      "type": "RemoveAlphaChannel",
+      "pos": [
+        -560.8995361328125,
+        2802.24169921875
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 91,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "图像",
+          "type": "IMAGE",
+          "link": 183
+        }
+      ],
+      "outputs": [
+        {
+          "label": "图像",
+          "name": "图像",
+          "type": "IMAGE",
+          "links": [
+            185
+          ]
+        }
+      ],
+      "properties": {
+        "widget_ue_connectable": {},
+        "Node name for S&R": "RemoveAlphaChannel"
+      },
+      "widgets_values": [
+        "黑"
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 182,
+      "type": "PreviewImage",
+      "pos": [
+        -11.790307998657227,
+        3129.85986328125
+      ],
+      "size": [
+        140,
+        246
+      ],
+      "flags": {},
+      "order": 105,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 191
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "widget_ue_connectable": {},
+        "Node name for S&R": "PreviewImage"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 179,
+      "type": "InspyrenetRembg",
+      "pos": [
+        -800.0657348632812,
+        2891.450439453125
+      ],
+      "size": [
+        270,
+        78
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 67,
+      "mode": 2,
+      "inputs": [
+        {
+          "label": "image",
+          "name": "image",
+          "type": "IMAGE",
+          "link": 179
+        }
+      ],
+      "outputs": [
+        {
+          "label": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            180,
+            182,
+            183,
+            186,
+            187,
+            188
+          ]
+        },
+        {
+          "label": "MASK",
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-inspyrenet-rembg",
+        "ver": "1.1.1",
+        "widget_ue_connectable": {},
+        "Node name for S&R": "InspyrenetRembg"
+      },
+      "widgets_values": [
+        "default"
+      ]
+    },
+    {
+      "id": 180,
+      "type": "MuyeLoadImage",
+      "pos": [
+        -922.9700927734375,
+        2967.55419921875
+      ],
+      "size": [
+        290.237548828125,
+        391.9526672363281
+      ],
+      "flags": {},
+      "order": 41,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "图像",
+          "name": "图像",
+          "type": "IMAGE",
+          "links": [
+            179
+          ]
+        },
+        {
+          "label": "遮罩",
+          "name": "遮罩",
+          "type": "MASK",
+          "links": null
+        },
+        {
+          "label": "文件名称",
+          "name": "文件名称",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "widget_ue_connectable": {},
+        "Node name for S&R": "MuyeLoadImage"
+      },
+      "widgets_values": [
+        "example.png",
+        "image"
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      20,
+      0,
+      19,
+      0,
+      "AUDIO"
+    ],
+    [
+      3,
+      19,
+      0,
+      22,
+      0,
+      "*"
+    ],
+    [
+      4,
+      19,
+      1,
+      23,
+      0,
+      "*"
+    ],
+    [
+      5,
+      20,
+      0,
+      24,
+      0,
+      "AUDIO"
+    ],
+    [
+      6,
+      24,
+      0,
+      25,
+      0,
+      "*"
+    ],
+    [
+      7,
+      24,
+      1,
+      26,
+      0,
+      "*"
+    ],
+    [
+      8,
+      30,
+      0,
+      29,
+      0,
+      "*"
+    ],
+    [
+      9,
+      32,
+      0,
+      29,
+      3,
+      "*"
+    ],
+    [
+      10,
+      31,
+      0,
+      29,
+      1,
+      "*"
+    ],
+    [
+      11,
+      29,
+      0,
+      33,
+      0,
+      "INT"
+    ],
+    [
+      12,
+      29,
+      1,
+      34,
+      0,
+      "*"
+    ],
+    [
+      13,
+      35,
+      0,
+      29,
+      4,
+      "*"
+    ],
+    [
+      14,
+      36,
+      0,
+      29,
+      2,
+      "*"
+    ],
+    [
+      15,
+      37,
+      1,
+      38,
+      0,
+      "*"
+    ],
+    [
+      16,
+      37,
+      2,
+      39,
+      0,
+      "*"
+    ],
+    [
+      17,
+      37,
+      3,
+      40,
+      0,
+      "*"
+    ],
+    [
+      18,
+      45,
+      1,
+      42,
+      0,
+      "*"
+    ],
+    [
+      19,
+      45,
+      2,
+      43,
+      0,
+      "*"
+    ],
+    [
+      20,
+      45,
+      3,
+      44,
+      0,
+      "*"
+    ],
+    [
+      22,
+      48,
+      0,
+      46,
+      0,
+      "IMAGE"
+    ],
+    [
+      23,
+      48,
+      1,
+      46,
+      1,
+      "MASK"
+    ],
+    [
+      24,
+      46,
+      0,
+      49,
+      0,
+      "IMAGE"
+    ],
+    [
+      25,
+      48,
+      1,
+      50,
+      0,
+      "MASK"
+    ],
+    [
+      26,
+      50,
+      0,
+      51,
+      1,
+      "MASK"
+    ],
+    [
+      27,
+      48,
+      0,
+      51,
+      0,
+      "IMAGE"
+    ],
+    [
+      28,
+      51,
+      0,
+      52,
+      0,
+      "IMAGE"
+    ],
+    [
+      37,
+      53,
+      0,
+      62,
+      0,
+      "MASK"
+    ],
+    [
+      38,
+      54,
+      0,
+      63,
+      0,
+      "MASK"
+    ],
+    [
+      39,
+      60,
+      1,
+      53,
+      0,
+      "MASK"
+    ],
+    [
+      40,
+      59,
+      0,
+      53,
+      1,
+      "MASK"
+    ],
+    [
+      43,
+      60,
+      1,
+      64,
+      0,
+      "MASK"
+    ],
+    [
+      44,
+      59,
+      0,
+      64,
+      1,
+      "MASK"
+    ],
+    [
+      45,
+      59,
+      0,
+      65,
+      1,
+      "MASK"
+    ],
+    [
+      46,
+      60,
+      1,
+      65,
+      0,
+      "MASK"
+    ],
+    [
+      47,
+      65,
+      0,
+      67,
+      0,
+      "MASK"
+    ],
+    [
+      48,
+      64,
+      0,
+      66,
+      0,
+      "MASK"
+    ],
+    [
+      49,
+      68,
+      1,
+      59,
+      0,
+      "MASK"
+    ],
+    [
+      63,
+      74,
+      0,
+      54,
+      0,
+      "MASK"
+    ],
+    [
+      69,
+      83,
+      0,
+      84,
+      0,
+      "VIDEO"
+    ],
+    [
+      72,
+      84,
+      0,
+      86,
+      0,
+      "IMAGE"
+    ],
+    [
+      74,
+      86,
+      1,
+      74,
+      0,
+      "MASK"
+    ],
+    [
+      76,
+      86,
+      0,
+      87,
+      0,
+      "IMAGE"
+    ],
+    [
+      85,
+      89,
+      0,
+      95,
+      0,
+      "*"
+    ],
+    [
+      86,
+      89,
+      1,
+      96,
+      0,
+      "*"
+    ],
+    [
+      87,
+      89,
+      3,
+      97,
+      0,
+      "*"
+    ],
+    [
+      88,
+      89,
+      2,
+      99,
+      0,
+      "IMAGE"
+    ],
+    [
+      89,
+      104,
+      2,
+      100,
+      0,
+      "IMAGE"
+    ],
+    [
+      90,
+      104,
+      3,
+      101,
+      0,
+      "*"
+    ],
+    [
+      91,
+      104,
+      1,
+      102,
+      0,
+      "*"
+    ],
+    [
+      92,
+      104,
+      0,
+      103,
+      0,
+      "*"
+    ],
+    [
+      93,
+      105,
+      0,
+      104,
+      0,
+      "STRING"
+    ],
+    [
+      94,
+      105,
+      0,
+      104,
+      1,
+      "STRING"
+    ],
+    [
+      95,
+      105,
+      0,
+      104,
+      2,
+      "STRING"
+    ],
+    [
+      122,
+      121,
+      3,
+      118,
+      0,
+      "*"
+    ],
+    [
+      123,
+      121,
+      1,
+      119,
+      0,
+      "*"
+    ],
+    [
+      124,
+      121,
+      0,
+      120,
+      0,
+      "*"
+    ],
+    [
+      127,
+      121,
+      2,
+      123,
+      0,
+      "IMAGE"
+    ],
+    [
+      128,
+      121,
+      3,
+      123,
+      1,
+      "STRING"
+    ],
+    [
+      129,
+      114,
+      0,
+      123,
+      2,
+      "STRING"
+    ],
+    [
+      130,
+      113,
+      0,
+      123,
+      3,
+      "STRING"
+    ],
+    [
+      131,
+      114,
+      0,
+      123,
+      4,
+      "STRING"
+    ],
+    [
+      132,
+      113,
+      0,
+      123,
+      5,
+      "STRING"
+    ],
+    [
+      133,
+      123,
+      0,
+      125,
+      0,
+      "*"
+    ],
+    [
+      134,
+      123,
+      1,
+      126,
+      0,
+      "*"
+    ],
+    [
+      137,
+      121,
+      2,
+      117,
+      0,
+      "IMAGE"
+    ],
+    [
+      138,
+      129,
+      2,
+      130,
+      0,
+      "*"
+    ],
+    [
+      143,
+      148,
+      0,
+      135,
+      2,
+      "STRING"
+    ],
+    [
+      144,
+      149,
+      0,
+      135,
+      0,
+      "IMAGE"
+    ],
+    [
+      145,
+      135,
+      0,
+      150,
+      0,
+      "IMAGE"
+    ],
+    [
+      146,
+      135,
+      1,
+      151,
+      0,
+      "MASK"
+    ],
+    [
+      174,
+      135,
+      1,
+      176,
+      0,
+      "MASK"
+    ],
+    [
+      176,
+      176,
+      0,
+      172,
+      0,
+      "IMAGE"
+    ],
+    [
+      177,
+      174,
+      0,
+      172,
+      1,
+      "IMAGE"
+    ],
+    [
+      178,
+      172,
+      0,
+      177,
+      0,
+      "IMAGE"
+    ],
+    [
+      179,
+      180,
+      0,
+      179,
+      0,
+      "IMAGE"
+    ],
+    [
+      180,
+      179,
+      0,
+      181,
+      0,
+      "IMAGE"
+    ],
+    [
+      182,
+      179,
+      0,
+      183,
+      0,
+      "IMAGE"
+    ],
+    [
+      183,
+      179,
+      0,
+      184,
+      0,
+      "IMAGE"
+    ],
+    [
+      185,
+      184,
+      0,
+      185,
+      0,
+      "IMAGE"
+    ],
+    [
+      186,
+      179,
+      0,
+      190,
+      0,
+      "IMAGE"
+    ],
+    [
+      187,
+      179,
+      0,
+      191,
+      0,
+      "IMAGE"
+    ],
+    [
+      188,
+      179,
+      0,
+      192,
+      0,
+      "IMAGE"
+    ],
+    [
+      189,
+      183,
+      0,
+      187,
+      0,
+      "IMAGE"
+    ],
+    [
+      190,
+      181,
+      0,
+      186,
+      0,
+      "IMAGE"
+    ],
+    [
+      191,
+      190,
+      0,
+      182,
+      0,
+      "IMAGE"
+    ],
+    [
+      192,
+      191,
+      0,
+      188,
+      0,
+      "IMAGE"
+    ],
+    [
+      193,
+      192,
+      0,
+      189,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "图像节点",
+      "bounding": [
+        106.54261016845703,
+        -682.545654296875,
+        347.59527587890625,
+        909.84716796875
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "文本节点",
+      "bounding": [
+        -430.7835693359375,
+        -846.1480102539062,
+        420,
+        1235.3125
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "文件节点",
+      "bounding": [
+        -928.3117065429688,
+        -636.6983642578125,
+        432.24371337890625,
+        754.2994384765625
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 4,
+      "title": "遮罩节点",
+      "bounding": [
+        -1310,
+        -561.820556640625,
+        300,
+        653.820556640625
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 5,
+      "title": "音频节点",
+      "bounding": [
+        -1785.238525390625,
+        -733.0826416015625,
+        377.3888854980469,
+        263.87310791015625
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 6,
+      "title": "Group",
+      "bounding": [
+        -1812.5057373046875,
+        -388.4833679199219,
+        420,
+        639.2553100585938
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 7,
+      "title": "音频节点",
+      "bounding": [
+        -2360.567626953125,
+        448.01324462890625,
+        1080.4716796875,
+        558.3369750976562
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 8,
+      "title": "数学表达式",
+      "bounding": [
+        -2631.300048828125,
+        1058.1063232421875,
+        1419.1275634765625,
+        598.978759765625
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 9,
+      "title": "尺寸节点",
+      "bounding": [
+        -2869.265869140625,
+        1751.519287109375,
+        1720,
+        521.5999755859375
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 10,
+      "title": "遮罩上色+遮罩填充",
+      "bounding": [
+        -840,
+        466.3999938964844,
+        1120,
+        701.5999755859375
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 11,
+      "title": "遮罩拼接",
+      "bounding": [
+        -963.1715087890625,
+        1266.47705078125,
+        1552.9051513671875,
+        1380.8033447265625
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 12,
+      "title": "遮罩合并",
+      "bounding": [
+        -3168.26513671875,
+        2422.328125,
+        2066.24267578125,
+        911.5626220703125
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 13,
+      "title": "文件夹读取器",
+      "bounding": [
+        670,
+        446.3999938964844,
+        2600.063232421875,
+        730.1251220703125
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 14,
+      "title": "Group",
+      "bounding": [
+        723.3916625976562,
+        1314.2381591796875,
+        2440.80322265625,
+        829.626708984375
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 15,
+      "title": "文字叠加图像+图像混合",
+      "bounding": [
+        763.3853759765625,
+        2428.30224609375,
+        2407.578125,
+        774.4923706054688
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 16,
+      "title": "移除透明通道",
+      "bounding": [
+        -932.9700927734375,
+        2720.11474609375,
+        1492.907958984375,
+        691.4012451171875
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ue_links": [],
+    "links_added_by_ue": [],
+    "ds": {
+      "scale": 0.2853116706110006,
+      "offset": [
+        4153.65600439424,
+        844.7899417675865
+      ]
+    },
+    "frontendVersion": "1.23.4",
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true
+  },
+  "version": 0.4
+}
