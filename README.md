@@ -1,4 +1,4 @@
-# ComfyUI_Muye
+# ComfyUI_Muye for ComfyUI
 
 以下是一些我自己常用的节点，全中文实现，这些节点都是AI写的。
 ![图片描述](./示例图片/所有节点预览.png)
@@ -39,4 +39,7 @@
 支持批量生成（批次大小）和多帧（帧数）设置，兼容图片和视频生成任务。并自动限制最大分辨率，防止显存溢出。
 ![图片描述](./示例图片/尺寸选择.png) ![图片描述](./示例图片/尺寸预设.png)
 
+安装：
+直接使用 git clone https://github.com/muyexiuluo/ComfyUI_Muye.git 将本仓库克隆到
+你的\ComfyUI\custom_nodes\ 文件夹下
 
