@@ -17,38 +17,27 @@ class SaveFilesToLocal:
                 "文本文件名": ("STRING", {"default": ""}),
                 "文本后缀": ("STRING", {"default": ".txt"}),
                 "文本保存路径": ("STRING", {"default": "请输入"}),
-                "视频文件名": ("STRING", {"default": ""}),
-                "视频后缀": ("STRING", {"default": ".mp4"}),
-                "视频保存路径": ("STRING", {"default": "请输入"}),
-                "音频文件名": ("STRING", {"default": ""}),
-                "音频后缀": ("STRING", {"default": ".wav"}),
-                "音频保存路径": ("STRING", {"default": "请输入"}),
                 "附加": (["追加", "覆盖"], {"default": "追加"}),
             },
             "optional": {
                 "图片": ("IMAGE",),
-                "文本": ("STRING", {"forceInput": True, "is_list": True}),
-                "视频": ("VIDEO",),
-                "音频": ("AUDIO",),
+                "文本": ("STRING", {"forceInput": True, "is_list": True}),  
             }
         }
 
-    RETURN_TYPES = ("STRING", "STRING", "STRING")
-    RETURN_NAMES = ("图片名称", "文本名称", "其他名称")
-    OUTPUT_IS_LIST = (True, True, True)
+    RETURN_TYPES = ("STRING", "STRING")
+    RETURN_NAMES = ("图片名称", "文本名称")
+    OUTPUT_IS_LIST = (True, True)
     OUTPUT_NODE = True
     FUNCTION = "save_files"
     CATEGORY = "Muye/文件"
 
     def save_files(self, 图片文件名, 图片后缀, 图片保存路径,
                    文本文件名, 文本后缀, 文本保存路径,
-                   视频文件名, 视频后缀, 视频保存路径,
-                   音频文件名, 音频后缀, 音频保存路径,
                    附加, 图片=None, 文本=None, 视频=None, 音频=None):
         # 初始化输出名称列表
         image_names = []
         text_names = []
-        other_names = []
 
         # 确保保存路径存在
         def ensure_directory(path):
@@ -158,56 +147,11 @@ class SaveFilesToLocal:
                     text_names.append(filename)
                     print(f"保存文本: {filename} (内容: {txt[:100]}...)")
 
-        # 3. 处理视频
-        if 视频 is not None and 视频保存路径 != "请输入":
-            ensure_directory(视频保存路径)
-            videos = parse_input(视频, "video")
-            video_filename_list = parse_input(视频文件名, "video")
-            video_filename_list = cycle_filenames(video_filename_list, len(videos))
 
-            print(f"视频数量: {len(videos)}, 文件名列表: {video_filename_list}")
 
-            for idx, vid in enumerate(videos):
-                base_name = video_filename_list[idx]
-                extension = 视频后缀 if 视频后缀 else ".mp4"
-                full_path, filename = get_unique_filename(base_name, extension, 视频保存路径, 附加)
-                if isinstance(vid, torch.Tensor):
-                    try:
-                        import imageio
-                        vid_np = vid.cpu().numpy()
-                        writer = imageio.get_writer(full_path, fps=30)
-                        for frame in vid_np:
-                            writer.append_data(frame)
-                        writer.close()
-                    except Exception as e:
-                        print(f"保存视频失败: {e}")
-                other_names.append(filename)
-                print(f"保存视频: {filename}")
+        # （已移除视频和音频保存功能）
 
-        # 4. 处理音频
-        if 音频 is not None and 音频保存路径 != "请输入":
-            ensure_directory(音频保存路径)
-            audios = parse_input(音频, "audio")
-            audio_filename_list = parse_input(音频文件名, "audio")
-            audio_filename_list = cycle_filenames(audio_filename_list, len(audios))
-
-            print(f"音频数量: {len(audios)}, 文件名列表: {audio_filename_list}")
-
-            for idx, aud in enumerate(audios):
-                base_name = audio_filename_list[idx]
-                extension = 音频后缀 if 音频后缀 else ".wav"
-                full_path, filename = get_unique_filename(base_name, extension, 音频保存路径, 附加)
-                if isinstance(aud, torch.Tensor):
-                    try:
-                        import soundfile as sf
-                        aud_np = aud.cpu().numpy()
-                        sf.write(full_path, aud_np, samplerate=44100)
-                    except Exception as e:
-                        print(f"保存音频失败: {e}")
-                other_names.append(filename)
-                print(f"保存音频: {filename}")
-
-        return (image_names, text_names, other_names)
+        return (image_names, text_names)
 
 # 节点映射
 NODE_CLASS_MAPPINGS = {
