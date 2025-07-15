@@ -35,3 +35,4 @@ load_all_nodes(os.path.dirname(__file__))
 
 
 __all__ = ['NODE_CLASS_MAPPINGS', 'NODE_DISPLAY_NAME_MAPPINGS', 'WEB_DIRECTORY']
+
