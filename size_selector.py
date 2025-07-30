@@ -118,6 +118,7 @@ class MuyeSizeSelector:
             except Exception:
                 return 0
 
+
         宽数 = parse_num(宽)
         高数 = parse_num(高)
 
@@ -163,15 +164,16 @@ class MuyeSizeSelector:
 
         # 根据帧数决定潜在张量形状
         if 帧数 > 0:
-            # 视频模型：包含帧数维度
-            潜在 = torch.zeros([批次大小, 帧数, 16, 高度 // 8, 宽度 // 8], device=self.设备)
+            # 视频模型：shape与官方EmptyHunyuanLatentVideo一致
+            latent_frames = ((int(帧数) - 1) // 4) + 1
+            潜在 = torch.zeros([批次大小, 16, latent_frames, 高度 // 8, 宽度 // 8], device=self.设备)
         else:
             # 图像模型：不包含帧数维度
             潜在 = torch.zeros([批次大小, 16, 高度 // 8, 宽度 // 8], device=self.设备)
             帧数 = 0  # 确保输出帧数为 0
 
         # 调试日志：记录输出尺寸
-        print(f"潜在 - 尺寸: {潜在.shape}, 宽度: {宽度}, 高度: {高度}, 帧数: {帧数}")
+        print(f"[MuyeSizeSelector] 返回: 潜在.shape={潜在.shape}, 宽度={宽度}, 高度={高度}, 帧数={帧数}")
 
         return ({"samples": 潜在}, 宽度, 高度, 帧数)
 
@@ -184,4 +186,3 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "MuyeSizeSelector": "尺寸选择器"
 }
 
-## print("MuyeSizeSelector node defined successfully")
