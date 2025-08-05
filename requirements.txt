@@ -6,3 +6,5 @@ Pillow
 numpy
 scikit-image
 moviepy
+deepface
+#tf-keras  #说明： deepface库在最新版本（0.0.93）中可能依赖 tf-keras 作为 Keras 的接口，TensorFlow 2.19.0 需要显式安装 tf-keras 包

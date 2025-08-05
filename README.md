@@ -1,4 +1,16 @@
 # ComfyUI_Muye
+2025年8月5日 更新：
+
+## 新增 face_selector_advanced 即 面部选择器（高级） 节点 识别准确率高达100%
+
+“区分男女”功能，依赖于DeepFace模型。所以请在您的xxxx\ComfyUI_windows_portable\python_embeded文件夹下运行.\python.exe -m pip install DeepFace  命令，用以安装DeepFace依赖库，或者直接安装我的requirements.txt文件。
+
+“区分男女”功能第一次运行时，会自动下载大小为512M的gender_model_weights.h5文件到您的C:\Users\xxxx\.deepface\weights路径下，如遇下载失败，您可以自行到https://github.com/serengil/deepface_models/releases/tag/v1.0 地址手动下载
+
+“遮罩辅助”的遮罩来源，您可以自行选择您习惯的面部识别节点所输出的遮罩即可 如：Segment Anything 或者 Impact节点中的检测工具。
+![图片描述](./示例图片/面部选择器（高级）.png)
+
+
 
 2025年7月31日 更新：
 
@@ -78,3 +90,4 @@
 cd xx\ComfyUI\custom_nodes
 git clone https://github.com/muyexiuluo/ComfyUI_Muye.git 
 然后安装 requirements.txt 文件中的依赖
+
