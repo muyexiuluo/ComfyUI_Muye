@@ -120,7 +120,8 @@ class 面部选择器高级:
                 "图像": ("IMAGE",),
                 "区分男女": (["不区分", "男", "女"], {"default": "不区分"}),
                 "人物排序": (["像素占比", "从左向右"], {"default": "从左向右"}),
-                "输出索引": ("INT", {"default": 1, "min": 0, "max": 100}),
+                # 修改为字符串类型，允许多序号输入
+                "输出索引": ("STRING", {"default": "1", "multiline": False, "tooltip": "输入0输出全部，或如1 3、2,6、2，6、2。6等，支持空格/中英文逗号/句号分隔多个序号"}),
                 "最小尺寸": ("INT", {"default": 50, "min": 0, "max": 5000}),
                 "置信度阈值": ("FLOAT", {"default": 0.5, "min": 0.0, "max": 1.0, "step": 0.01}),
                 "裁剪系数": ("FLOAT", {"default": 3.0, "min": 1.0, "max": 10.0}),
@@ -291,6 +292,10 @@ class 面部选择器高级:
                 faces_final.append({'box': m['box'], 'score': 1.0, 'gender': 'unknown', 'iou': 0, 'source': 'mask_only'})
                 only_mask_count += 1
 
+        # 先解析输出索引字符串，保证后续都能用
+        import re
+        idx_str = str(输出索引).strip()
+
         # 打印最终输出信息
         if 输出索引 == 0:
             out_idx_str = "所有"
@@ -299,13 +304,15 @@ class 面部选择器高级:
         sort_str = "像素占比" if 人物排序 == "像素占比" else "从左向右"
         gender_str = f"，{区分男女}" if 区分男女 != "不区分" else ""
         if faces_final:
-            if 输出索引 == 0:
+            if idx_str == "0":
                 sizes = [f['box'][2:4] for f in faces_final]
                 size_str = ", ".join([f"{w}x{h}" for w, h in sizes])
-            else:
-                idx = min(输出索引-1, len(faces_final)-1)
+            elif 'idx_list' in locals() and idx_list:
+                idx = min(idx_list[0]-1, len(faces_final)-1)
                 w, h = faces_final[idx]['box'][2:4]
                 size_str = f"{w}x{h}"
+            else:
+                size_str = "无输出"
         else:
             size_str = "无输出"
         print(f"[高级面部选择器] 最终人脸输出：{out_idx_str}，{sort_str}{gender_str}，像素大小：{size_str}")
@@ -313,23 +320,41 @@ class 面部选择器高级:
         import torch
         def np2torch(img_np, batch=False):
             arr = np.array(img_np)
+            # 保证arr为(H,W,3)
             if arr.ndim == 2:
                 arr = np.stack([arr]*3, axis=-1)
             if arr.ndim == 3 and arr.shape[2] == 1:
                 arr = np.repeat(arr, 3, axis=2)
             if arr.ndim == 3 and arr.shape[2] > 3:
                 arr = arr[:, :, :3]
+            # 去除多余batch维
+            while arr.ndim > 3:
+                arr = arr[0]
             arr = arr.astype(np.float32)
             if arr.max() > 1.0:
                 arr = arr / 255.0
             tensor = torch.from_numpy(arr).contiguous()
             if batch:
-                return tensor
+                return tensor.unsqueeze(0)  # (1,H,W,3)
             else:
-                return tensor.unsqueeze(0)
+                return tensor  # (H,W,3)
 
-        # 输出逻辑同原版
-        if 输出索引 == 0 and faces_final:
+        # 解析输出索引，支持多个序号
+        import re
+        idx_str = str(输出索引).strip()
+        # 支持空格、逗号、句号、英文点等分隔
+        idx_raw_list = re.split(r'[\s,，。\.]+', idx_str)
+        idx_raw_list = [s for s in idx_raw_list if s]
+        # 只保留纯数字
+        idx_list = [int(s) for s in idx_raw_list if s.isdigit()]
+
+        if not faces_final:
+            mask = np.ones(orig_img.shape[:2], dtype=np.uint8) * 255
+            mask_crop = mask.copy()
+            return (np2torch(orig_img), {"box": None, "angle": 0}, mask_crop)
+
+        # 判定逻辑：只要有0（且不是10、20等），输出全部
+        if 0 in idx_list:
             crop_imgs, crop_datas, mask_crops = [], [], []
             for idx, face in enumerate(faces_final):
                 if 是否旋转面部:
@@ -379,16 +404,16 @@ class 面部选择器高级:
                     crop_img = np.repeat(crop_img, 3, axis=2)
                 elif crop_img.ndim == 3 and crop_img.shape[2] > 3:
                     crop_img = crop_img[:, :, :3]
-                crop_imgs.append(np2torch(crop_img, batch=True))
+                crop_imgs.append(np2torch(crop_img, batch=False))
                 crop_datas.append(crop_data)
                 mask_crops.append(mask_crop)
-            return (crop_imgs, crop_datas, mask_crops)
-        elif not faces_final:
-            mask = np.ones(orig_img.shape[:2], dtype=np.uint8) * 255
-            mask_crop = mask.copy()
-            return (np2torch(orig_img), {"box": None, "angle": 0}, mask_crop)
-        else:
-            idx = min(输出索引-1, len(faces_final)-1)
+            return (tuple(crop_imgs), tuple(crop_datas), tuple(mask_crops))
+
+        # 多序号输出
+        # 只剩下两种情况：单个数值和多个数值
+        valid_idxs = [idx for idx in idx_list if 1 <= idx <= len(faces_final)]
+        if len(valid_idxs) == 1:
+            idx = valid_idxs[0] - 1
             face = faces_final[idx]
             if 是否旋转面部:
                 angle = self.selector._get_face_angle(orig_img, face)
@@ -437,7 +462,68 @@ class 面部选择器高级:
                 crop_img = np.repeat(crop_img, 3, axis=2)
             elif crop_img.ndim == 3 and crop_img.shape[2] > 3:
                 crop_img = crop_img[:, :, :3]
-            return (np2torch(crop_img), crop_data, mask_crop)
+            return (np2torch(crop_img, batch=True), crop_data, mask_crop)
+        elif len(valid_idxs) > 1:
+            crop_imgs, crop_datas, mask_crops = [], [], []
+            for idx in valid_idxs:
+                i = idx - 1
+                face = faces_final[i]
+                if 是否旋转面部:
+                    angle = self.selector._get_face_angle(orig_img, face)
+                    h0, w0 = orig_img.shape[:2]
+                    center = (w0/2, h0/2)
+                    M = cv2.getRotationMatrix2D(center, angle, 1)
+                    rotated_img = cv2.warpAffine(orig_img, M, (w0, h0), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)
+                    x, y, w, h = face['box']
+                    box_pts = np.array([[x, y], [x+w, y], [x, y+h], [x+w, y+h]], dtype=np.float32)
+                    ones = np.ones((4,1), dtype=np.float32)
+                    box_pts_homo = np.concatenate([box_pts, ones], axis=1)
+                    new_pts = (M @ box_pts_homo.T).T
+                    nx, ny = new_pts[:,0].min(), new_pts[:,1].min()
+                    ex, ey = new_pts[:,0].max(), new_pts[:,1].max()
+                    nx, ny, ex, ey = int(round(nx)), int(round(ny)), int(round(ex)), int(round(ey))
+                    cx, cy = (nx+ex)//2, (ny+ey)//2
+                    size = int(max(ex-nx, ey-ny) * 裁剪系数)
+                    nnx, nny = max(cx-size//2, 0), max(cy-size//2, 0)
+                    nex, ney = min(cx+size//2, w0), min(cy+size//2, h0)
+                    crop_img = rotated_img[nny:ney, nnx:nex].copy()
+                    mask = np.zeros((h0, w0), dtype=np.uint8)
+                    cv2.fillConvexPoly(mask, np.int32(new_pts), 255)
+                    mask_crop = mask[nny:ney, nnx:nex].copy()
+                    crop_data = {
+                        'box': [nnx, nny, nex-nnx, ney-nny],
+                        'angle': angle,
+                        'center': center,
+                        'rotated': True
+                    }
+                else:
+                    crop_img, crop_data = self.selector.crop_face(orig_img, face, crop_scale=裁剪系数, rotate=False)
+                    mask = np.zeros(orig_img.shape[:2], dtype=np.uint8)
+                    if face.get('mask_contour') is not None:
+                        cv2.drawContours(mask, [face['mask_contour']], -1, 255, -1)
+                    else:
+                        x, y, w, h = crop_data['box']
+                        cv2.rectangle(mask, (x, y), (x+w, y+h), 255, -1)
+                    x, y, w, h = crop_data['box']
+                    mask_crop = mask[y:y+h, x:x+w].copy()
+                    crop_data['angle'] = 0
+                    crop_data['center'] = (orig_img.shape[1]/2, orig_img.shape[0]/2)
+                    crop_data['rotated'] = False
+                if crop_img.ndim == 2:
+                    crop_img = np.stack([crop_img]*3, axis=-1)
+                elif crop_img.ndim == 3 and crop_img.shape[2] == 1:
+                    crop_img = np.repeat(crop_img, 3, axis=2)
+                elif crop_img.ndim == 3 and crop_img.shape[2] > 3:
+                    crop_img = crop_img[:, :, :3]
+                crop_imgs.append(np2torch(crop_img, batch=False))
+                crop_datas.append(crop_data)
+                mask_crops.append(mask_crop)
+            return (tuple(crop_imgs), tuple(crop_datas), tuple(mask_crops))
+        else:
+            # 没有有效索引，返回空
+            mask = np.ones(orig_img.shape[:2], dtype=np.uint8) * 255
+            mask_crop = mask.copy()
+            return (np2torch(orig_img), {"box": None, "angle": 0}, mask_crop)
 
 # 节点注册导出
 NODE_CLASS_MAPPINGS = {

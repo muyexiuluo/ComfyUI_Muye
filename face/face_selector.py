@@ -359,7 +359,7 @@ class 面部粘贴:
         if is_list(裁剪图像) and is_list(裁剪数据) and is_list(裁剪遮罩):
             paste_img = to_numpy(原图).copy()
             for face_img, crop_data, mask in zip(裁剪图像, 裁剪数据, 裁剪遮罩):
-                if not crop_data or not crop_data.get("box"):
+                if not crop_data or not (isinstance(crop_data, dict) and crop_data.get("box")):
                     continue
                 x, y, w, h = crop_data["box"]
                 angle = crop_data.get("angle", 0)
@@ -394,41 +394,45 @@ class 面部粘贴:
                         paste_img[y1:y2, x1:x2] = roi
             return (np2torch(paste_img),)
         # 单张粘贴
-        if not 裁剪数据 or not 裁剪数据.get("box"):
-            return (裁剪图像,)
-        x, y, w, h = 裁剪数据["box"]
-        angle = 裁剪数据.get("angle", 0)
-        center = 裁剪数据.get("center", None)
-        rotated = 裁剪数据.get("rotated", False)
-        paste_img = to_numpy(原图).copy()  # (H, W, 3)
-        face_img = to_numpy(裁剪图像).copy()  # (h, w, 3)
-        mask = 裁剪遮罩.copy()  # (h, w)
-        H, W = paste_img.shape[:2]
-        if rotated and angle != 0 and center is not None:
-            restored_face = np.zeros_like(paste_img)
-            restored_mask = np.zeros((H, W), dtype=np.uint8)
-            face_resized = cv2.resize(face_img, (w, h))
-            mask_resized = cv2.resize(mask, (w, h), interpolation=cv2.INTER_NEAREST)
-            restored_face[y:y+h, x:x+w] = face_resized
-            restored_mask[y:y+h, x:x+w] = mask_resized
-            M = cv2.getRotationMatrix2D(center, -angle, 1)
-            inv_face = cv2.warpAffine(restored_face, M, (W, H), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)
-            inv_mask = cv2.warpAffine(restored_mask, M, (W, H), flags=cv2.INTER_NEAREST, borderMode=cv2.BORDER_REFLECT)
-            mask_bool = (inv_mask > 127).astype(np.uint8)
-            paste_img = paste_img * (1 - mask_bool[..., None]) + inv_face * mask_bool[..., None]
+        elif isinstance(裁剪数据, dict):
+            if not 裁剪数据 or not 裁剪数据.get("box"):
+                return (裁剪图像,)
+            x, y, w, h = 裁剪数据["box"]
+            angle = 裁剪数据.get("angle", 0)
+            center = 裁剪数据.get("center", None)
+            rotated = 裁剪数据.get("rotated", False)
+            paste_img = to_numpy(原图).copy()  # (H, W, 3)
+            face_img = to_numpy(裁剪图像).copy()  # (h, w, 3)
+            mask = 裁剪遮罩.copy()  # (h, w)
+            H, W = paste_img.shape[:2]
+            if rotated and angle != 0 and center is not None:
+                restored_face = np.zeros_like(paste_img)
+                restored_mask = np.zeros((H, W), dtype=np.uint8)
+                face_resized = cv2.resize(face_img, (w, h))
+                mask_resized = cv2.resize(mask, (w, h), interpolation=cv2.INTER_NEAREST)
+                restored_face[y:y+h, x:x+w] = face_resized
+                restored_mask[y:y+h, x:x+w] = mask_resized
+                M = cv2.getRotationMatrix2D(center, -angle, 1)
+                inv_face = cv2.warpAffine(restored_face, M, (W, H), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)
+                inv_mask = cv2.warpAffine(restored_mask, M, (W, H), flags=cv2.INTER_NEAREST, borderMode=cv2.BORDER_REFLECT)
+                mask_bool = (inv_mask > 127).astype(np.uint8)
+                paste_img = paste_img * (1 - mask_bool[..., None]) + inv_face * mask_bool[..., None]
+            else:
+                x1, y1 = max(x, 0), max(y, 0)
+                x2, y2 = min(x+w, W), min(y+h, H)
+                target_w, target_h = x2-x1, y2-y1
+                if target_w > 0 and target_h > 0:
+                    face_resized = cv2.resize(face_img, (target_w, target_h))
+                    mask_resized = cv2.resize(mask, (target_w, target_h), interpolation=cv2.INTER_NEAREST)
+                    roi = paste_img[y1:y2, x1:x2]
+                    mask_bool = (mask_resized > 127).astype(np.uint8)
+                    for c in range(3):
+                        roi[...,c] = roi[...,c] * (1-mask_bool) + face_resized[...,c] * mask_bool
+                    paste_img[y1:y2, x1:x2] = roi
+            return (np2torch(paste_img),)
         else:
-            x1, y1 = max(x, 0), max(y, 0)
-            x2, y2 = min(x+w, W), min(y+h, H)
-            target_w, target_h = x2-x1, y2-y1
-            if target_w > 0 and target_h > 0:
-                face_resized = cv2.resize(face_img, (target_w, target_h))
-                mask_resized = cv2.resize(mask, (target_w, target_h), interpolation=cv2.INTER_NEAREST)
-                roi = paste_img[y1:y2, x1:x2]
-                mask_bool = (mask_resized > 127).astype(np.uint8)
-                for c in range(3):
-                    roi[...,c] = roi[...,c] * (1-mask_bool) + face_resized[...,c] * mask_bool
-                paste_img[y1:y2, x1:x2] = roi
-        return (np2torch(paste_img),)
+            # 其他情况直接返回原图
+            return (np2torch(to_numpy(原图)),)
 
 # 节点注册导出
 NODE_CLASS_MAPPINGS = {
