@@ -181,7 +181,7 @@ class 面部选择器:
                     h0, w0 = orig_img.shape[:2]
                     center = (w0/2, h0/2)
                     M = cv2.getRotationMatrix2D(center, angle, 1)
-                    rotated_img = cv2.warpAffine(orig_img, M, (w0, h0), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)
+                    rotated_img = cv2.warpAffine(orig_img, M, (w0, h0), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT, borderValue=(0,0,0))
                     x, y, w, h = face['box']
                     box_pts = np.array([[x, y], [x+w, y], [x, y+h], [x+w, y+h]], dtype=np.float32)
                     ones = np.ones((4,1), dtype=np.float32)
@@ -235,7 +235,7 @@ class 面部选择器:
                 h0, w0 = orig_img.shape[:2]
                 center = (w0/2, h0/2)
                 M = cv2.getRotationMatrix2D(center, angle, 1)
-                rotated_img = cv2.warpAffine(orig_img, M, (w0, h0), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)
+                rotated_img = cv2.warpAffine(orig_img, M, (w0, h0), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT, borderValue=(0,0,0))
                 x, y, w, h = faces[idx]['box']
                 box_pts = np.array([[x, y], [x+w, y], [x, y+h], [x+w, y+h]], dtype=np.float32)
                 ones = np.ones((4,1), dtype=np.float32)
@@ -369,17 +369,48 @@ class 面部粘贴:
                 mask_np = mask.copy()
                 H, W = paste_img.shape[:2]
                 if rotated and angle != 0 and center is not None:
-                    restored_face = np.zeros_like(paste_img)
-                    restored_mask = np.zeros((H, W), dtype=np.uint8)
+                    # 简化处理：按你的建议，对整图先旋转到人脸朝上，直接把patch贴回旋转后的图，再把整图旋转回原向量
+                    # 这样避免复杂的逆向warp导致的黑线问题
                     face_resized = cv2.resize(face_img_np, (w, h))
                     mask_resized = cv2.resize(mask_np, (w, h), interpolation=cv2.INTER_NEAREST)
-                    restored_face[y:y+h, x:x+w] = face_resized
-                    restored_mask[y:y+h, x:x+w] = mask_resized
-                    M = cv2.getRotationMatrix2D(center, -angle, 1)
-                    inv_face = cv2.warpAffine(restored_face, M, (W, H), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)
-                    inv_mask = cv2.warpAffine(restored_mask, M, (W, H), flags=cv2.INTER_NEAREST, borderMode=cv2.BORDER_REFLECT)
-                    mask_bool = (inv_mask > 127).astype(np.uint8)
-                    paste_img = paste_img * (1 - mask_bool[..., None]) + inv_face * mask_bool[..., None]
+                    # 先把整张图旋转到人脸朝上
+                    # 为避免旋转导致的黑色填充区域影响合成：先对整图做边界复制填充，再在填充图上旋转/贴图，
+                    # 旋转回后裁剪出原始画幅并用有效像素mask合成。
+                    pad = int(np.hypot(W, H))
+                    padded = cv2.copyMakeBorder(paste_img.copy(), pad, pad, pad, pad, borderType=cv2.BORDER_REPLICATE)
+                    full_valid = np.ones((H + 2*pad, W + 2*pad), dtype=np.uint8) * 255
+                    # 旋转中心在填充图上的坐标
+                    center_p = (center[0] + pad, center[1] + pad)
+                    M_rot_p = cv2.getRotationMatrix2D(center_p, angle, 1)
+                    rotated_full_p = cv2.warpAffine(padded, M_rot_p, (W + 2*pad, H + 2*pad), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REPLICATE)
+                    rotated_valid_p = cv2.warpAffine(full_valid, M_rot_p, (W + 2*pad, H + 2*pad), flags=cv2.INTER_NEAREST, borderMode=cv2.BORDER_CONSTANT, borderValue=0)
+                    # 将patch贴入rotated_full的对应box（处理越界）
+                    x1, y1 = max(x, 0), max(y, 0)
+                    x2, y2 = min(x + w, W), min(y + h, H)
+                    if x2 > x1 and y2 > y1:
+                        sx = 0 if x >= 0 else -x
+                        sy = 0 if y >= 0 else -y
+                        sw = x2 - x1
+                        sh = y2 - y1
+                        patch = face_resized[sy:sy+sh, sx:sx+sw]
+                        mpatch = mask_resized[sy:sy+sh, sx:sx+sw]
+                        # 在带填充的旋转图上写入（注意 pad 偏移）
+                        roi = rotated_full_p[y1+pad:y2+pad, x1+pad:x2+pad]
+                        mask_bool = (mpatch > 127)
+                        # 直接用mask替换区域，然后可选羽化（保持自然）
+                        roi[mask_bool] = patch[mask_bool]
+                        rotated_full_p[y1+pad:y2+pad, x1+pad:x2+pad] = roi
+                        # 标记这些像素为有效（用于反转旋转后合成掩码）
+                        rotated_valid_p[y1+pad:y2+pad, x1+pad:x2+pad][mask_bool] = 255
+                    # 把整张填充后旋转图旋回原角度，再裁剪回原始画幅
+                    M_back_p = cv2.getRotationMatrix2D(center_p, -angle, 1)
+                    inv_img_p = cv2.warpAffine(rotated_full_p, M_back_p, (W + 2*pad, H + 2*pad), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REPLICATE)
+                    inv_valid_p = cv2.warpAffine(rotated_valid_p, M_back_p, (W + 2*pad, H + 2*pad), flags=cv2.INTER_NEAREST, borderMode=cv2.BORDER_CONSTANT, borderValue=0)
+                    inv_img = inv_img_p[pad:pad+H, pad:pad+W]
+                    inv_valid = inv_valid_p[pad:pad+H, pad:pad+W]
+                    valid_mask = (inv_valid > 127).astype(np.uint8)
+                    alpha = valid_mask[..., None].astype(np.float32)
+                    paste_img = (paste_img.astype(np.float32) * (1.0 - alpha) + inv_img.astype(np.float32) * alpha).astype(np.uint8)
                 else:
                     x1, y1 = max(x, 0), max(y, 0)
                     x2, y2 = min(x+w, W), min(y+h, H)
@@ -406,17 +437,38 @@ class 面部粘贴:
             mask = 裁剪遮罩.copy()  # (h, w)
             H, W = paste_img.shape[:2]
             if rotated and angle != 0 and center is not None:
-                restored_face = np.zeros_like(paste_img)
-                restored_mask = np.zeros((H, W), dtype=np.uint8)
-                face_resized = cv2.resize(face_img, (w, h))
-                mask_resized = cv2.resize(mask, (w, h), interpolation=cv2.INTER_NEAREST)
-                restored_face[y:y+h, x:x+w] = face_resized
-                restored_mask[y:y+h, x:x+w] = mask_resized
-                M = cv2.getRotationMatrix2D(center, -angle, 1)
-                inv_face = cv2.warpAffine(restored_face, M, (W, H), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)
-                inv_mask = cv2.warpAffine(restored_mask, M, (W, H), flags=cv2.INTER_NEAREST, borderMode=cv2.BORDER_REFLECT)
-                mask_bool = (inv_mask > 127).astype(np.uint8)
-                paste_img = paste_img * (1 - mask_bool[..., None]) + inv_face * mask_bool[..., None]
+                    # 同上：对整张图先旋转，贴回，再旋转回原角度，避免黑边
+                    face_resized = cv2.resize(face_img, (w, h))
+                    mask_resized = cv2.resize(mask, (w, h), interpolation=cv2.INTER_NEAREST)
+                    pad = int(np.hypot(W, H))
+                    padded = cv2.copyMakeBorder(paste_img.copy(), pad, pad, pad, pad, borderType=cv2.BORDER_REPLICATE)
+                    full_valid = np.ones((H + 2*pad, W + 2*pad), dtype=np.uint8) * 255
+                    center_p = (center[0] + pad, center[1] + pad)
+                    M_rot_p = cv2.getRotationMatrix2D(center_p, angle, 1)
+                    rotated_full_p = cv2.warpAffine(padded, M_rot_p, (W + 2*pad, H + 2*pad), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REPLICATE)
+                    rotated_valid_p = cv2.warpAffine(full_valid, M_rot_p, (W + 2*pad, H + 2*pad), flags=cv2.INTER_NEAREST, borderMode=cv2.BORDER_CONSTANT, borderValue=0)
+                    x1, y1 = max(x, 0), max(y, 0)
+                    x2, y2 = min(x + w, W), min(y + h, H)
+                    if x2 > x1 and y2 > y1:
+                        sx = 0 if x >= 0 else -x
+                        sy = 0 if y >= 0 else -y
+                        sw = x2 - x1
+                        sh = y2 - y1
+                        patch = face_resized[sy:sy+sh, sx:sx+sw]
+                        mpatch = mask_resized[sy:sy+sh, sx:sx+sw]
+                        roi = rotated_full_p[y1+pad:y2+pad, x1+pad:x2+pad]
+                        mask_bool = (mpatch > 127)
+                        roi[mask_bool] = patch[mask_bool]
+                        rotated_full_p[y1+pad:y2+pad, x1+pad:x2+pad] = roi
+                        rotated_valid_p[y1+pad:y2+pad, x1+pad:x2+pad][mask_bool] = 255
+                    M_back_p = cv2.getRotationMatrix2D(center_p, -angle, 1)
+                    inv_img_p = cv2.warpAffine(rotated_full_p, M_back_p, (W + 2*pad, H + 2*pad), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REPLICATE)
+                    inv_valid_p = cv2.warpAffine(rotated_valid_p, M_back_p, (W + 2*pad, H + 2*pad), flags=cv2.INTER_NEAREST, borderMode=cv2.BORDER_CONSTANT, borderValue=0)
+                    inv_img = inv_img_p[pad:pad+H, pad:pad+W]
+                    inv_valid = inv_valid_p[pad:pad+H, pad:pad+W]
+                    valid_mask = (inv_valid > 127).astype(np.uint8)
+                    alpha = valid_mask[..., None].astype(np.float32)
+                    paste_img = (paste_img.astype(np.float32) * (1.0 - alpha) + inv_img.astype(np.float32) * alpha).astype(np.uint8)
             else:
                 x1, y1 = max(x, 0), max(y, 0)
                 x2, y2 = min(x+w, W), min(y+h, H)
