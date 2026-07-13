@@ -382,7 +382,7 @@ class 面部选择器高级:
         if not faces_final:
             mask = np.ones(orig_img.shape[:2], dtype=np.uint8) * 255
             mask_crop = mask.copy()
-            return (np2torch(orig_img), {"box": None, "angle": 0}, mask_crop)
+            return (np2torch(orig_img, batch=True), {"box": None, "angle": 0}, mask_crop)
 
         # 10. 旋转逻辑（如需）
         # 为避免对小crop做边界镜像而产生缝隙，旋转在原图上执行，然后再裁剪出扩张后的box，
@@ -410,7 +410,7 @@ class 面部选择器高级:
             if not faces_final:
                 mask = np.ones(orig_img.shape[:2], dtype=np.uint8) * 255
                 mask_crop = mask.copy()
-                return (np2torch(orig_img), {"box": None, "angle": 0}, mask_crop)
+                return (np2torch(orig_img, batch=True), {"box": None, "angle": 0}, mask_crop)
             crop_imgs, crop_datas, mask_crops = [], [], []
             for face in faces_final:
                 x, y, w, h = expand_box(face['box'], 裁剪系数, orig_img.shape)
@@ -510,7 +510,7 @@ class 面部选择器高级:
         else:
             mask = np.ones(orig_img.shape[:2], dtype=np.uint8) * 255
             mask_crop = mask.copy()
-            return (np2torch(orig_img), {"box": None, "angle": 0}, mask_crop)
+            return (np2torch(orig_img, batch=True), {"box": None, "angle": 0}, mask_crop)
 
 # 节点注册导出
 NODE_CLASS_MAPPINGS = {
