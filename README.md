@@ -1,6 +1,6 @@
 # ComfyUI_Muye
 
-2025年11月3日 更新：
+2026年7月13日 更新：
 
 修复了 face_selector_advanced 即 面部选择器（高级） 节点的小bug，并删除face_selector.py节点，有了高级节点，这个基础节点感觉有点鸡肋，直接删除！
 
