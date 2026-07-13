@@ -1,0 +1,273 @@
+import torch
+import json
+import os
+import gc
+
+from transformers import AutoProcessor, BitsAndBytesConfig
+
+# ════════════════════════════════════════════════════════════
+CAPTION_MODEL = "Muye_CaptionModel"
+
+
+class CaptionModelWrapper:
+    def __init__(self, model, processor, arch_type, model_path, model_name):
+        self.model = model
+        self.processor = processor
+        self.arch_type = arch_type
+        self.model_path = model_path
+        self.model_name = model_name
+
+    def __repr__(self):
+        return f"<CaptionModel: {self.model_name} ({self.arch_type})>"
+
+
+# ────────────────────────────────────────────────────────────
+def get_available_models():
+    models = {}
+    search_dirs = []
+    try:
+        import folder_paths
+        base_dirs = folder_paths.get_folder_paths("checkpoints")
+        if base_dirs:
+            for bd in base_dirs:
+                d = os.path.normpath(os.path.join(bd, "..", "Caption_checkpoints"))
+                if os.path.isdir(d):
+                    search_dirs.append(d)
+                d2 = os.path.normpath(os.path.join(bd, "..", "LLavacheckpoints"))
+                if os.path.isdir(d2):
+                    search_dirs.append(d2)
+        plugin_dir = os.path.dirname(os.path.dirname(__file__))
+        fixed_base = os.path.normpath(os.path.join(plugin_dir, "..", "models"))
+        for subdir in ["Caption_checkpoints", "LLavacheckpoints"]:
+            d = os.path.normpath(os.path.join(fixed_base, subdir))
+            if os.path.isdir(d) and d not in search_dirs:
+                search_dirs.append(d)
+        for search_dir in search_dirs:
+            for item in os.listdir(search_dir):
+                item_path = os.path.normpath(os.path.join(search_dir, item))
+                if os.path.isdir(item_path):
+                    has_model = (
+                        os.path.exists(os.path.join(item_path, "config.json"))
+                        or any(f.endswith(".safetensors") for f in os.listdir(item_path))
+                    )
+                    if has_model and item not in models:
+                        models[item] = item_path
+    except Exception as e:
+        print(f"[木叶·图像反推] 扫描模型目录出错: {e}")
+    return models
+
+
+# ────────────────────────────────────────────────────────────
+def detect_model_arch(model_dir):
+    config_path = os.path.join(model_dir, "config.json")
+    if not os.path.exists(config_path):
+        return "unknown"
+    try:
+        with open(config_path, "r", encoding="utf-8") as f:
+            config_dict = json.load(f)
+        archs = config_dict.get("architectures", [])
+        arch_str = " ".join(archs).lower()
+        if "qwen2_5_vl" in arch_str or "qwen2.5_vl" in arch_str:
+            return "qwen2_5_vl"
+        elif "qwen2_vl" in arch_str or "qwen2.vl" in arch_str:
+            return "qwen2_5_vl"
+        elif "llava" in arch_str:
+            return "llava"
+        elif "qwen3vl" in arch_str or "qwen3_vl" in arch_str:
+            return "qwen3_vl"
+        model_type = (config_dict.get("model_type") or "").lower()
+        if "qwen2_5_vl" in model_type or "qwen2.5_vl" in model_type:
+            return "qwen2_5_vl"
+        elif "qwen2_vl" in model_type or "qwen2.vl" in model_type:
+            return "qwen2_5_vl"
+        elif "llava" in model_type:
+            return "llava"
+        elif "qwen3vl" in model_type or "qwen3_vl" in model_type:
+            return "qwen3_vl"
+        return "unknown"
+    except Exception as e:
+        print(f"[木叶·图像反推] 检测架构失败: {e}")
+        return "unknown"
+
+
+# ────────────────────────────────────────────────────────────
+def _get_quant_config(quant_mode):
+    if quant_mode == "int8":
+        return BitsAndBytesConfig(load_in_8bit=True)
+    elif quant_mode == "int4":
+        return BitsAndBytesConfig(load_in_4bit=True)
+    return None
+
+
+# ────────────────────────────────────────────────────────────
+def load_model_with_options(model_dir, quantization_mode="bf16", attention="eager"):
+    print(f"[木叶·图像反推] 正在加载模型: {model_dir}")
+    print(f"[木叶·图像反推] 量化: {quantization_mode} | 加速: {attention}")
+
+    arch_type = detect_model_arch(model_dir)
+    print(f"[木叶·图像反推] 模型架构: {arch_type}")
+
+    if quantization_mode in ("int8", "int4"):
+        dtype = torch.float16
+    elif quantization_mode == "float16":
+        dtype = torch.float16
+    else:
+        dtype = torch.bfloat16
+
+    quant_config = _get_quant_config(quantization_mode)
+    if quant_config is not None:
+        print(f"[木叶·图像反推] 使用 BitsAndBytes {quantization_mode.upper()} 量化加载")
+
+    load_kwargs = {
+        "device_map": "auto",
+        "dtype": dtype,
+        "trust_remote_code": True,
+    }
+    if quant_config is not None:
+        load_kwargs["quantization_config"] = quant_config
+
+    if attention != "eager":
+        load_kwargs["attn_implementation"] = attention
+
+    model = None
+    processor = None
+
+    try:
+        model = _load_model_by_arch(model_dir, arch_type, load_kwargs.copy())
+        model.eval()
+    except Exception as e:
+        print(f"[木叶·图像反推] 加载失败，回退到 eager: {e}")
+        load_kwargs.pop("attn_implementation", None)
+        try:
+            model = _load_model_by_arch(model_dir, arch_type, load_kwargs.copy())
+            model.eval()
+        except Exception as e2:
+            print(f"[木叶·图像反推] 模型加载失败: {e2}")
+            return None, None, arch_type
+
+    try:
+        processor = AutoProcessor.from_pretrained(model_dir, trust_remote_code=True)
+    except Exception:
+        try:
+            processor = AutoProcessor.from_pretrained(model_dir, trust_remote_code=True, use_fast=False)
+        except Exception:
+            processor = None
+
+    if processor and arch_type in ("qwen2_5_vl", "qwen3_vl"):
+        try:
+            processor = AutoProcessor.from_pretrained(
+                model_dir, max_pixels=501760, min_pixels=3136, trust_remote_code=True,
+            )
+        except Exception:
+            pass
+
+    if torch.cuda.is_available():
+        used = torch.cuda.memory_allocated(0) / 1024**3
+        print(f"[木叶·图像反推] 模型加载完成 | 显存占用: {used:.1f}GB")
+
+    return model, processor, arch_type
+
+
+def _load_model_by_arch(model_dir, arch_type, load_kwargs):
+    # transformers 5.x renamed AutoModelForVision2Seq → AutoModelForImageTextToText
+    try:
+        from transformers import AutoModelForVision2Seq as VisionAutoModel
+    except ImportError:
+        try:
+            from transformers import AutoModelForImageTextToText as VisionAutoModel
+        except ImportError:
+            VisionAutoModel = None
+
+    if arch_type == "qwen2_5_vl":
+        try:
+            from transformers import Qwen2_5_VLForConditionalGeneration
+            return Qwen2_5_VLForConditionalGeneration.from_pretrained(model_dir, **load_kwargs)
+        except (ImportError, Exception) as e:
+            print(f"[木叶·图像反推] Qwen2_5_VL 专用加载失败: {e}")
+    elif arch_type == "llava":
+        try:
+            from transformers import LlavaForConditionalGeneration
+            return LlavaForConditionalGeneration.from_pretrained(model_dir, **load_kwargs)
+        except (ImportError, Exception) as e:
+            print(f"[木叶·图像反推] LLaVA 专用加载失败: {e}")
+    elif arch_type == "qwen3_vl":
+        # Qwen3-VL 系列
+        try:
+            from transformers import Qwen3VLForConditionalGeneration
+            return Qwen3VLForConditionalGeneration.from_pretrained(model_dir, **load_kwargs)
+        except (ImportError, AttributeError):
+            print("[木叶·图像反推] transformers 缺少 Qwen3VLForConditionalGeneration")
+        except Exception as e:
+            print(f"[木叶·图像反推] Qwen3-VL 专用加载失败: {e}")
+    # fallback
+    if VisionAutoModel is not None:
+        return VisionAutoModel.from_pretrained(model_dir, **load_kwargs)
+    else:
+        # Fallback to generic AutoModel
+        from transformers import AutoModel
+        return AutoModel.from_pretrained(model_dir, **load_kwargs)
+
+
+# ════════════════════════════════════════════════════════════
+class 反推模型加载:
+    @classmethod
+    def INPUT_TYPES(cls):
+        model_dirs = get_available_models()
+        return {
+            "required": {
+                "模型选择": (list(model_dirs.keys()) if model_dirs else ["(无可用模型)"], {
+                    "default": list(model_dirs.keys())[0] if model_dirs else "(无可用模型)",
+                    "tooltip": "选择使用的反推模型",
+                }),
+                "量化方式": (
+                    ["BF16", "FP16", "INT8", "INT4"],
+                    {"default": "BF16", "tooltip": "模型量化方式"},
+                ),
+                "attention": (
+                    ["eager", "sdpa", "flash_attention_2"],
+                    {"default": "eager", "tooltip": "注意力加速方式"},
+                ),
+            },
+        }
+
+    RETURN_TYPES = (CAPTION_MODEL,)
+    RETURN_NAMES = ("模型",)
+    FUNCTION = "load_model"
+    CATEGORY = "Muye/图像反推"
+
+    def load_model(self, 模型选择, 量化方式="BF16", attention="eager"):
+        model_dirs = get_available_models()
+        model_path = model_dirs.get(模型选择)
+
+        if not model_path or not os.path.isdir(model_path):
+            print(f"[木叶·图像反推] 警告: 找不到模型 '{模型选择}'")
+            return (CaptionModelWrapper(None, None, "unknown", "", 模型选择),)
+
+        quant_mode_map = {
+            "BF16": "bf16", "FP16": "float16",
+            "INT8": "int8", "INT4": "int4",
+        }
+
+        model, processor, arch_type = load_model_with_options(
+            model_path,
+            quant_mode_map.get(量化方式, "bf16"),
+            attention,
+        )
+
+        if model is None:
+            return (CaptionModelWrapper(None, None, "unknown", "", 模型选择),)
+
+        wrapper = CaptionModelWrapper(
+            model=model, processor=processor, arch_type=arch_type,
+            model_path=model_path, model_name=模型选择,
+        )
+        print(f"[木叶·图像反推] 模型已加载: {wrapper}")
+        return (wrapper,)
+
+
+NODE_CLASS_MAPPINGS = {
+    "反推模型加载": 反推模型加载,
+}
+NODE_DISPLAY_NAME_MAPPINGS = {
+    "反推模型加载": "🦞 反推模型加载",
+}
