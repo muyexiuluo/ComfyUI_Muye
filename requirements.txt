@@ -1,10 +1,32 @@
-opencv-python
+# ════════════════════════════════════════════════════
+# ComfyUI_Muye 依赖列表
+# ════════════════════════════════════════════════════
+
+# —— 核心依赖（必须安装）——
+
+# 图像反推节点：模型加载、推理
+transformers>=4.50.3
+accelerate
+safetensors
+
+# 面部选择器节点：人脸检测
 mediapipe
-torch
-numpy
-Pillow
-numpy
+
+# 面部选择器 + 图片批量缩放：图像处理
+opencv-python
+
+# 图像混合模式节点：HSV 颜色空间转换
 scikit-image
-moviepy
-deepface
-#tf-keras  #说明： deepface库在最新版本（0.0.93）中可能依赖 tf-keras 作为 Keras 的接口，TensorFlow 2.19.0 需要显式安装 tf-keras 包
+
+# 蒙版填充空洞节点：二值形态学操作
+scipy
+
+# —— 以下依赖通常已由 ComfyUI 环境自带，一般无需重复安装 ——
+# torch           # ComfyUI 基础环境已包含
+# numpy           # ComfyUI 基础环境已包含
+# Pillow          # ComfyUI 基础环境已包含
+
+# —— 可选依赖（按需安装）——
+
+## bitsandbytes    # 图像反推节点 INT8/INT4 量化加载需要，不装则无法使用量化模式
+## torchaudio      # file_reader 节点读取音频文件需要，不常用可不装
