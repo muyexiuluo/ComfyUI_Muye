@@ -1,6 +1,9 @@
 # ComfyUI_Muye
 
 ## 2026年7月13日 更新：新增 图像反推相关节点 
+![图片描述](./示例图片/反推-多图参考.png)
+![图片描述](./示例图片/反推-视频推理.png)
+![图片描述](./示例图片/反推-批量打标.png)
 
 # 图像反推节点
 
@@ -104,9 +107,6 @@
 ComfyUI/models/Caption_checkpoints/模型名/
 ## 如果你之前使用过llama-joycaption-beta-one-hf-llava模型，并存放在ComfyUI/models/LLavacheckpoints/模型名/ 路径中，则无需重复下载，也能识别到
 ```
-![图片描述](./示例图片/反推-多图参考.png)
-![图片描述](./示例图片/反推-视频推理.png)
-![图片描述](./示例图片/反推-批量打标.png)
 
 
 
