@@ -1,12 +1,116 @@
 # ComfyUI_Muye
 
-2026年7月13日 更新：
+## 2026年7月13日 更新：新增 图像反推相关节点 
 
-修复了 face_selector_advanced 即 面部选择器（高级） 节点的小bug，并删除face_selector.py节点，有了高级节点，这个基础节点感觉有点鸡肋，直接删除！
+# 图像反推节点
 
-2025年11月3日 更新：
+基于 Qwen2.5-VL / Qwen3-VL / LLaVA 等多模态模型的图像描述与提示词处理节点。
 
-修复了 face_selector_advanced 即 面部选择器（高级） 节点的几个小bug，第一，修复了旋转面部之后的粘贴错位问题，第二，修复索引序号不匹配时，会输出错误的像素条灰度图问题，第三，修复了索引序号和区分性别选项的部分逻辑冲突问题。
+## 节点列表
+
+### 🦞 反推模型加载
+
+加载多模态模型供下游节点使用。自动扫描 `Caption_checkpoints` 和 `LLavacheckpoints` 目录，支持 BF16/FP16/INT8/INT4 量化和多种注意力加速方式，模型加载后自动缓存。
+
+### 🦞 提示词反推及扩写
+
+基于 Qwen3-VL / Qwen2.5-VL / LLaVA 的通用指令节点，支持三种推理模式：
+
+- **单图推理** — 逐张独立处理图片，每张图单独输出结果。有图时模型看图执行指令，无图时纯文本执行。适用于批量图片反推、提示词扩写、风格转换等。
+- **多图参考** — 将多张图片一起作为交叉参考源，模型自动按输入顺序编号为【图1】、【图2】...，用户可在指令中指定"用图1的背景+图2的姿势"等方式融合多图元素。需 Qwen 系列模型支持。
+- **视频序列帧** — 将输入的帧序列视为连续视频，让模型理解时间维度的动态变化。需 Qwen 系列模型支持（Qwen2.5-VL / Qwen3-VL）。
+
+支持种子控制，输出结果可复现。
+
+### 🦞 提示词校对
+
+接收最多4个提示词来源，让模型对照原图进行交叉比对，去除幻觉和错误描述，输出准确的最终提示词。校对规则完全由用户自定义，可控性强。
+
+## 支持的模型架构
+
+- Qwen2.5-VL 系列
+- Qwen3-VL / Qwen3.5-VL 系列
+- LLaVA 系列
+
+## transformers 版本要求
+
+| transformers 版本 | 支持的模型 |
+|---|---|
+| >= 4.50.3 | Qwen2.5-VL、Qwen3-VL、Qwen3.5-VL、LLaVA（推荐） |
+| < 4.50.3 | 仅支持 Qwen2.5-VL、LLaVA（不支持 Qwen3 系列） |
+
+建议升级到最新 transformers 以使用全部模型。
+
+## 推荐模型
+
+### thesby/Qwen3-VL-8B-NSFW-Caption-V4.5 ⭐ 首选推荐
+
+**适合人群：** 追求最高描述质量，显存充足（BF16 约需 16GB+），需要处理复杂场景和短视频的用户。
+
+**模型特点：**
+- 基于 Qwen3-VL-8B-Instruct LoRA 微调，在约 **200万** 高质量图文对上训练
+- 描述能力接近 Gemini-2.5-Flash，远超 GPT-4.1-mini
+- **支持短视频描述**（按 fps=1 抽帧即可）
+- 精准捕捉核心主体、环境背景、人物情绪、物体材质和光影等丰富细节
+- SFW 与 NSFW 内容全覆盖，无审查过滤
+- 擅长超长文本描述，可生成数百词的详细段落，深入分析图像叙事结构和潜在含义
+- 中英双语支持良好，V4.5 版本已修复英文 prompt 拒绝描述的问题
+
+**适合场景：** LoRA 训练高质量 caption、深度图片分析、短视频内容理解、需要长描述的创意写作灵感
+
+**下载地址：** https://huggingface.co/monkeyslikebananas/Qwen3-VL-8B-NSFW-Caption-V4.5
+
+---
+
+### thesby/Qwen2.5-VL-7B-NSFW-Caption-V3
+
+**适合人群：** 显存有限（BF16 约需 14GB+）、需要稳定可靠描述质量的用户，也能反推视频，不过时间别太长，图像别太大，否则容易给显存干爆了。
+
+**模型特点：**
+- 基于 Qwen2.5-VL-7B-Instruct LoRA 微调，同样在约 **200万** 高质量图文对上训练
+- 描述能力超过 GPT-4.1-mini，与 V3 版本一脉相承的成熟质量
+- 精准捕捉主体、背景、情绪、材质、光影等细节
+- SFW 与 NSFW 内容全覆盖，无审查过滤
+- 擅长长文本详细描述，适合复杂场景的深度内容解读
+- 兼容性好，transformers >= 4.45 即可使用
+
+**适合场景：** LoRA 训练 caption 生成、日常图片反推、资源有限但需要高质量描述的用户
+
+**下载地址：** https://www.modelscope.cn/models/fireicewolf/Qwen2.5-VL-7B-N-Caption-V3
+
+---
+
+### fancyfeast/llama-joycaption-beta-one-hf-llava
+
+**适合人群：** 显存紧张（BF16 约需 8-10GB）、主要用于 AI 绘画 LoRA 训练数据标注、需要快速推理的用户。
+
+**模型特点：**
+- 基于 Llama 3.1-8B-Instruct + SigLIP2-SO400M 视觉编码器，LLaVA 架构
+- **专为 Diffusion 模型训练数据标注而生**，作者的核心目标就是替代 ChatGPT 做图片 captioning
+- 完全免费开源无限制，无任何使用条款约束
+- SFW / NSFW 平等覆盖，拒绝审查式描述（不会出现"白色物质圆柱体"之类的模糊表达）
+- **风格多样性极强**——数字艺术、写实摄影、动漫、兽迷等全面覆盖，训练数据刻意保证了对不同画风、人种、性别、性取向的广泛覆盖
+- 描述能力接近 GPT-4o，在 captioning 任务上表现优异
+- 显存占用明显低于 Qwen 系列，推理速度更快
+
+**适合场景：** 批量图片打标、LoRA/Checkpoint 训练集准备、对显存敏感的设备、需要快速处理大量图片的工作流
+
+**下载地址：** https://huggingface.co/fancyfeast/llama-joycaption-beta-one-hf-llava
+
+## 模型放置路径
+
+将模型放在以下目录之一：
+```
+ComfyUI/models/Caption_checkpoints/模型名/
+## 如果你之前使用过llama-joycaption-beta-one-hf-llava模型，并存放在ComfyUI/models/LLavacheckpoints/模型名/ 路径中，则无需重复下载，也能识别到
+```
+![图片描述](./示例图片/反推-多图参考.png)
+![图片描述](./示例图片/反推-视频推理.png)
+![图片描述](./示例图片/反推-批量打标.png)
+
+
+
+2026年7月13日 face_selector_advanced 即 面部选择器（高级）节点修复了已知bug
 
 2025年8月5日 更新：
 
@@ -90,9 +194,9 @@
 
 ![图片描述](./示例图片/尺寸选择.png) ![图片描述](./示例图片/尺寸预设.png)
 
-安装： 
+###  安装：
 将本仓库克隆到 你的.\ComfyUI\custom_nodes\ 文件夹下
 cd xx\ComfyUI\custom_nodes
 git clone https://github.com/muyexiuluo/ComfyUI_Muye.git 
-然后安装 requirements.txt 文件中的依赖
+然后安装下 requirements.txt 文件中的依赖就行了
 
