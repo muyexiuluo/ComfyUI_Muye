@@ -41,14 +41,14 @@
 ## 支持的模型架构
 
 - Qwen2.5-VL 系列
-- Qwen3-VL / Qwen3.5-VL 系列
+- Qwen3-VL 
 - LLaVA 系列
 
 ## transformers 版本要求
 
 | transformers 版本 | 支持的模型 |
 |---|---|
-| >= 4.50.3 | Qwen2.5-VL、Qwen3-VL、Qwen3.5-VL、LLaVA(推荐) |
+| >= 4.50.3 | Qwen2.5-VL、Qwen3-VL、LLaVA(推荐) |
 | < 4.50.3 | 仅支持 Qwen2.5-VL、LLaVA(不支持 Qwen3 系列) |
 
 建议升级到最新 transformers 以使用全部模型。
