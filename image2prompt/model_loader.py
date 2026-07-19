@@ -10,15 +10,69 @@ CAPTION_MODEL = "Muye_CaptionModel"
 
 
 class CaptionModelWrapper:
-    def __init__(self, model, processor, arch_type, model_path, model_name):
+    # 类级别缓存：记录所有创建的实例，方便统一卸载
+    _instances = []
+
+    def __init__(self, model, processor, arch_type, model_path, model_name,
+                 quantization="bf16", attention="eager"):
         self.model = model
         self.processor = processor
         self.arch_type = arch_type
         self.model_path = model_path
         self.model_name = model_name
+        self.quantization = quantization
+        self.attention = attention
+        self._is_loaded = True
+        CaptionModelWrapper._instances.append(self)
 
     def __repr__(self):
         return f"<CaptionModel: {self.model_name} ({self.arch_type})>"
+
+    def reload(self):
+        """重新加载模型（被 unload_all 清理后自动调用）"""
+        if self._is_loaded and self.model is not None:
+            return True
+        if not self.model_path or not os.path.isdir(self.model_path):
+            print(f"[木叶·图像反推] 警告: 找不到模型路径 '{self.model_path}'")
+            return False
+        model, processor, arch_type = load_model_with_options(
+            self.model_path, self.quantization, self.attention,
+        )
+        if model is None:
+            print(f"[木叶·图像反推] 重新加载失败: {self.model_name}")
+            return False
+        self.model = model
+        self.processor = processor
+        self.arch_type = arch_type
+        self._is_loaded = True
+        print(f"[木叶·图像反推] 模型已自动重新加载: {self}")
+        return True
+
+    @classmethod
+    def unload_all(cls):
+        """卸载所有 Caption 模型的 GPU 权重，释放显存（保留实例和配置）"""
+        freed = 0
+        for wrapper in cls._instances:
+            if not wrapper._is_loaded:
+                continue
+            if wrapper.model is not None:
+                try:
+                    del wrapper.model
+                    wrapper.model = None
+                    freed += 1
+                except Exception:
+                    pass
+            if wrapper.processor is not None:
+                try:
+                    del wrapper.processor
+                    wrapper.processor = None
+                except Exception:
+                    pass
+            wrapper._is_loaded = False
+        # 不清空 _instances，保留实例引用方便 reload
+        if freed > 0:
+            print(f"[木叶·显存释放] Caption模型已卸载 {freed} 个实例")
+        return freed
 
 
 # ────────────────────────────────────────────────────────────
@@ -248,9 +302,10 @@ class 反推模型加载:
             "INT8": "int8", "INT4": "int4",
         }
 
+        quant_str = quant_mode_map.get(量化方式, "bf16")
         model, processor, arch_type = load_model_with_options(
             model_path,
-            quant_mode_map.get(量化方式, "bf16"),
+            quant_str,
             attention,
         )
 
@@ -260,6 +315,7 @@ class 反推模型加载:
         wrapper = CaptionModelWrapper(
             model=model, processor=processor, arch_type=arch_type,
             model_path=model_path, model_name=模型选择,
+            quantization=quant_str, attention=attention,
         )
         print(f"[木叶·图像反推] 模型已加载: {wrapper}")
         return (wrapper,)

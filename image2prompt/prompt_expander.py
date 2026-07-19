@@ -111,7 +111,12 @@ class 提示词反推及扩写:
         if not hasattr(模型, "model") or not hasattr(模型, "processor") or not hasattr(模型, "arch_type"):
             return (["错误：未正确连接模型"], -1)
         if 模型.model is None:
-            return (["错误：模型加载失败"], -1)
+            # 模型被显存释放节点清理了，尝试自动重新加载
+            if hasattr(模型, "reload"):
+                if not 模型.reload():
+                    return (["错误：模型重新加载失败"], -1)
+            else:
+                return (["错误：模型加载失败"], -1)
 
         model = 模型.model
         processor = 模型.processor
@@ -156,8 +161,8 @@ class 提示词反推及扩写:
         # ════════════════════════════════════════════════════
         if 推理模式 == "文本扩写":
             try:
-                result = self._expand_only_inference(
-                    model, processor, arch_type, 文本,
+                result = self._single_image_inference(
+                    model, processor, arch_type, None, 文本,
                     system_content, 最大生成长度, 温度, TopP采样, 重复惩罚,
                 )
                 results.append(result)
@@ -230,37 +235,6 @@ class 提示词反推及扩写:
         gc.collect()
 
         return (results, 种子)
-
-    # ────────────────────────────────────────────────────────
-    # 文本扩写 — 纯文本处理，完全忽略图像
-    # ────────────────────────────────────────────────────────
-    def _expand_only_inference(self, model, processor, arch_type, user_text,
-                                system_content, max_tokens, temperature, top_p, rep_penalty):
-        messages = [{"role": "user", "content": user_text}]
-
-        text_prompt = processor.apply_chat_template(
-            messages, add_generation_prompt=True, tokenize=False,
-        )
-
-        inputs = processor(text=[text_prompt], return_tensors="pt", padding=True)
-        model_inputs = {k: v.to(model.device) for k, v in inputs.items()}
-
-        with torch.no_grad():
-            output_ids = model.generate(
-                **model_inputs,
-                max_new_tokens=max_tokens,
-                temperature=temperature,
-                top_p=top_p,
-                repetition_penalty=rep_penalty,
-                do_sample=True if temperature > 0.0 else False,
-            )
-
-        input_ids = model_inputs["input_ids"]
-        generated_tokens = output_ids[0][input_ids.shape[1]:]
-        return processor.decode(
-            generated_tokens, skip_special_tokens=True,
-            clean_up_tokenization_spaces=True,
-        ).strip()
 
     # ────────────────────────────────────────────────────────
     # 单图推理（原有逻辑，独立处理每张图片）
