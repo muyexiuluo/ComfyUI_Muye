@@ -1,24 +1,66 @@
 # ComfyUI-Muye-nodes
 
+## 📁 插件节点结构图
+
+```
+ComfyUI_Muye/
+├── audio/                               # 音频节点
+│   └── audio_to_fps.py                  #   音频到 FPS 转换
+│
+├── face/                                # 面部节点
+│   ├── face_paste.py                    #   面部粘贴
+│   └── face_selector_advanced.py        #   面部选择器（高级）
+│
+├── files/                               # 文件节点
+│   ├── file_reader.py                   #   文件夹读取器
+│   └── save_files_to_local.py           #   保存文件到本地
+│
+├── image/                               # 图像节点
+│   ├── add_image_watermark.py           #   添加图片水印
+│   ├── image_batch_resize.py            #   批量缩放
+│   ├── image_blending_mode.py           #   图像混合模式
+│   ├── image_info.py                    #   图像信息
+│   ├── load_image.py                    #   加载图片
+│   └── remove_alpha_channel.py          #   移除透明通道
+│
+├── image2prompt/                        # 图像反推节点
+│   ├── model_loader.py                  #   反推模型加载
+│   ├── prompt_expander.py               #   提示词反推及扩写
+│   └── proofreader.py                   #   提示词校对
+│
+├── mask/                                # 遮罩节点
+│   ├── mask_colorize.py                 #   遮罩区域上色
+│   ├── mask_concatenate.py              #   遮罩拼接
+│   ├── mask_fill_holes.py               #   遮罩填充漏洞
+│   └── mask_merge_list.py               #   遮罩合并(列表)
+│
+├── text/                                # 文本节点
+│   ├── batch_text_replace.py            #   批量文本替换
+│   ├── split_list.py                    #   文本列表拆分
+│   ├── text_edit_output.py              #   文本编辑输出
+│   ├── text_overlay_image.py            #   文字叠加图像
+│   └── text_split_delimiter.py          #   文本按分隔符分割
+│
+├── tool/                                # 工具节点
+│   ├── math_calculator.py               #   数学表达式计算
+│   ├── memory_cleanup.py                #   内存清理
+│   └── size_selector.py                 #   尺寸选择器
+│
+├── 示例图片/                            # 节点演示截图
+│
+└── 示例工作流/                          # ComfyUI 工作流 JSON
+    ├── 木叶节点展示.json
+    ├── 面部选择器（高级）示例.json
+    └── 反推工作流（lora批量打标）.json
+```
+
+---
+
 ## 2026年7月13日 更新:新增 图像反推相关节点
 
-多图参考:
-
-![图片描述](./示例图片/反推-多图参考.png)
-
-视频推理
-
-![图片描述](./示例图片/反推-视频推理.png)
-
-批量打标
-
-![图片描述](./示例图片/反推-批量打标.png)
-
-# 图像反推节点
+## 图像反推节点
 
 基于 Qwen2.5-VL / Qwen3-VL / LLaVA 等多模态模型的图像描述与提示词处理节点。
-
-## 节点列表
 
 ### 🦞 反推模型加载
 
@@ -37,6 +79,18 @@
 ### 🦞 提示词校对
 
 接收最多4个提示词来源,让模型对照原图进行交叉比对,去除幻觉和错误描述,输出准确的最终提示词。校对规则完全由用户自定义,可控性强。
+
+多图参考:
+
+![图片描述](./示例图片/反推-多图参考.png)
+
+视频推理
+
+![图片描述](./示例图片/反推-视频推理.png)
+
+批量打标
+
+![图片描述](./示例图片/反推-批量打标.png)
 
 ## 支持的模型架构
 
@@ -60,10 +114,6 @@
 **适合人群:** 追求最高描述质量,显存充足(BF16 约需 16GB+),需要处理复杂场景和短视频的用户。
 
 **模型特点:**
-- 基于 Qwen3-VL-8B-Instruct LoRA 微调,在约 **200万** 高质量图文对上训练
-- 描述能力接近 Gemini-2.5-Flash,远超 GPT-4.1-mini
-- **支持短视频描述**(按 fps=1 抽帧即可)
-- 精准捕捉核心主体、环境背景、人物情绪、物体材质和光影等丰富细节
 - SFW 与 NSFW 内容全覆盖,无审查过滤
 - 擅长超长文本描述,可生成数百词的详细段落,深入分析图像叙事结构和潜在含义
 - 中英双语支持良好,V4.5 版本已修复英文 prompt 拒绝描述的问题
@@ -79,9 +129,6 @@
 **适合人群:** 显存有限(BF16 约需 14GB+)、需要稳定可靠描述质量的用户,也能反推视频,不过时间别太长,图像别太大,否则容易给显存干爆了。
 
 **模型特点:**
-- 基于 Qwen2.5-VL-7B-Instruct LoRA 微调,同样在约 **200万** 高质量图文对上训练
-- 描述能力超过 GPT-4.1-mini,与 V3 版本一脉相承的成熟质量
-- 精准捕捉主体、背景、情绪、材质、光影等细节
 - SFW 与 NSFW 内容全覆盖,无审查过滤
 - 擅长长文本详细描述,适合复杂场景的深度内容解读
 - 兼容性好,transformers >= 4.45 即可使用
@@ -97,12 +144,7 @@
 **适合人群:** 显存紧张(BF16 约需 8-10GB)、主要用于 AI 绘画 LoRA 训练数据标注、需要快速推理的用户。
 
 **模型特点:**
-- 基于 Llama 3.1-8B-Instruct + SigLIP2-SO400M 视觉编码器,LLaVA 架构
-- **专为 Diffusion 模型训练数据标注而生**,作者的核心目标就是替代 ChatGPT 做图片 captioning
-- 完全免费开源无限制,无任何使用条款约束
 - SFW / NSFW 平等覆盖,拒绝审查式描述(不会出现"白色物质圆柱体"之类的模糊表达)
-- **风格多样性极强**--数字艺术、写实摄影、动漫、兽迷等全面覆盖,训练数据刻意保证了对不同画风、人种、性别、性取向的广泛覆盖
-- 描述能力接近 GPT-4o,在 captioning 任务上表现优异
 - 显存占用明显低于 Qwen 系列,推理速度更快
 
 **适合场景:** 批量图片打标、LoRA/Checkpoint 训练集准备、对显存敏感的设备、需要快速处理大量图片的工作流
@@ -119,15 +161,13 @@ ComfyUI/models/Caption_checkpoints/模型名/
 
 
 
-2026年7月14日 更新：面部选择器节点全面升级为 UniFace（ONNX），移除 MediaPipe/DeepFace 依赖，性能与精度双提升
+## 2026年7月14日 更新：面部选择器节点全面升级为 UniFace（ONNX），移除 MediaPipe/DeepFace 依赖，性能与精度双提升
 
----
-
-## 面部选择器 + 面部粘贴节点
+### 面部选择器 + 面部粘贴节点
 
 基于 **UniFace (ONNX)** 的高精度人脸检测、性别识别、智能裁剪节点。
 
-### 📸 面部选择器
+## 📸 面部选择器
 
 使用 RetinaFace 模型进行人脸检测和 5 点关键点定位，支持多脸分别处理、性别过滤、自动旋转扶正。
 ![图片描述](./示例图片/面部选择器-参数示例.png)
@@ -227,6 +267,6 @@ ComfyUI/models/Caption_checkpoints/模型名/
 ###  安装:
 将本仓库克隆到 你的.\ComfyUI\custom_nodes\ 文件夹下
 cd xx\ComfyUI\custom_nodes
-git clone https://github.com/muyexiuluo/ComfyUI_Muye.git
+[git clone https://github.com/muyexiuluo/ComfyUI_Muye.git] 或者 (https://github.com/muyexiuluo/ComfyUI-Muye-nodes.git)
 然后安装下 requirements.txt 文件中的依赖就行了
 
