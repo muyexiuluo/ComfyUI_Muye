@@ -1,0 +1,15 @@
+[project]
+name = "comfyui-muye-nodes"
+description = "Image captioning, prompt engineering, face processing and utility nodes for ComfyUI."
+version = "1.0.0"
+license = { file = "LICENSE" }
+
+dependencies = []
+
+[project.urls]
+Repository = "https://github.com/muyexiuluo/ComfyUI-Muye-nodes"
+
+[tool.comfy]
+PublisherId = "muyexiuluo"
+DisplayName = "ComfyUI-Muye-nodes"
+Icon = ""
