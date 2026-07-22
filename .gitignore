@@ -30,3 +30,6 @@ Desktop.ini
 
 # Environment
 .env
+
+# ComfyUI publish
+node.zip
