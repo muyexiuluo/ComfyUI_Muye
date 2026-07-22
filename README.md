@@ -267,6 +267,7 @@ ComfyUI/models/Caption_checkpoints/模型名/
 ###  安装:
 将本仓库克隆到 你的.\ComfyUI\custom_nodes\ 文件夹下
 cd xx\ComfyUI\custom_nodes
+
 [git clone https://github.com/muyexiuluo/ComfyUI_Muye.git] 或者 (https://github.com/muyexiuluo/ComfyUI-Muye-nodes.git)
 然后安装下 requirements.txt 文件中的依赖就行了
 
